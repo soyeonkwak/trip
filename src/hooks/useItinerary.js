@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { SAMPLE_ITINERARY, INITIAL_TRIP_INFO } from '../data/sampleItinerary';
 
-const STORAGE_KEY_ITINERARY = 'travel_app_itinerary';
-const STORAGE_KEY_TRIP_INFO = 'travel_app_trip_info';
-const STORAGE_KEY_LAST_SYNC = 'travel_app_last_sync';
+const STORAGE_KEY_ITINERARY = 'travel_app_itinerary_v3';
+const STORAGE_KEY_TRIP_INFO = 'travel_app_trip_info_v3';
+const STORAGE_KEY_LAST_SYNC = 'travel_app_last_sync_v3';
 
 export function useItinerary() {
   const [itinerary, setItinerary] = useState(() => {
