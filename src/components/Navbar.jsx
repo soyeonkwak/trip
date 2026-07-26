@@ -1,11 +1,11 @@
 import React from 'react';
-import { Wifi, WifiOff, FileSpreadsheet, RefreshCw, Globe, ChevronRight, Cloud } from 'lucide-react';
+import { Wifi, WifiOff, FileSpreadsheet, RefreshCw, Globe, ChevronRight } from 'lucide-react';
 
-export default function Navbar({ isOnline, tripTitle, lastSyncTime, user, onOpenSheetModal, onOpenAuthModal, onResetDefault }) {
+export default function Navbar({ isOnline, tripTitle, lastSyncTime, onOpenSheetModal, onResetDefault }) {
   return (
     <header className="trip-header text-white px-5 pt-12 pb-5 relative z-10">
       {/* 온라인 상태 & 컨트롤 버튼 바 */}
-      <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
+      <div className="flex items-center justify-between mb-3">
         <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold ${
           isOnline ? 'bg-white/20 text-white' : 'bg-amber-400/80 text-amber-900'
         }`}>
@@ -16,17 +16,6 @@ export default function Navbar({ isOnline, tripTitle, lastSyncTime, user, onOpen
         </div>
 
         <div className="flex items-center gap-2">
-          {/* 클라우드 백업/로그인 버튼 */}
-          <button
-            onClick={onOpenAuthModal}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all active:scale-95 ${
-              user ? 'bg-emerald-500 hover:bg-emerald-600 text-white shadow-sm' : 'bg-white/20 hover:bg-white/30 text-white'
-            }`}
-          >
-            <Cloud className="w-3.5 h-3.5" />
-            <span>{user ? (user.isAnonymous ? '☁️ 익명 백업' : '☁️ 동기화됨') : '☁️ 로그인/백업'}</span>
-          </button>
-
           {/* 구글 시트 연동 버튼 */}
           <button
             onClick={onOpenSheetModal}

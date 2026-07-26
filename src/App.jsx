@@ -1,35 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Navbar from './components/Navbar';
 import BottomNav from './components/BottomNav';
 import TimelineView from './components/TimelineView';
 import MapView from './components/MapView';
 import SheetSyncModal from './components/SheetSyncModal';
-import AuthModal from './components/AuthModal';
 import TravelTipsView from './components/TravelTipsView';
 import { useItinerary } from './hooks/useItinerary';
 import { useOnlineStatus } from './hooks/useOnlineStatus';
 import { useTripTime } from './hooks/useTripTime';
-import { auth, onAuthStateChanged } from './firebase';
 import { WifiOff, Wifi, X } from 'lucide-react';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('timeline');
   const [isSheetModalOpen, setIsSheetModalOpen] = useState(false);
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [focusedMapItem, setFocusedMapItem] = useState(null);
-  const [user, setUser] = useState(null);
 
   const { itinerary, tripInfo, lastSyncTime, updateItinerary, resetToDefault } = useItinerary();
   const { isOnline, showToast, toastMessage, dismissToast } = useOnlineStatus();
   const tripTime = useTripTime();
-
-  // Firebase 로그인 상태 감지
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser || null);
-    });
-    return () => unsubscribe();
-  }, []);
 
   const handleFocusMap = (item) => {
     setFocusedMapItem(item);
@@ -52,9 +40,7 @@ export default function App() {
         isOnline={isOnline}
         tripTitle={tripInfo.title}
         lastSyncTime={lastSyncTime}
-        user={user}
         onOpenSheetModal={() => setIsSheetModalOpen(true)}
-        onOpenAuthModal={() => setIsAuthModalOpen(true)}
         onResetDefault={resetToDefault}
       />
 
@@ -95,16 +81,6 @@ export default function App() {
         onClose={() => setIsSheetModalOpen(false)}
         onUpdateItinerary={updateItinerary}
         onResetDefault={resetToDefault}
-      />
-
-      {/* Firebase 로그인 / 클라우드 백업 모달 */}
-      <AuthModal
-        isOpen={isAuthModalOpen}
-        onClose={() => setIsAuthModalOpen(false)}
-        user={user}
-        itinerary={itinerary}
-        tripInfo={tripInfo}
-        onUpdateItinerary={updateItinerary}
       />
     </div>
   );
