@@ -1,14 +1,15 @@
 // =========================================================
-// 한성소연 동유럽 여행 일정 (구글 시트 3차 최신 업데이트 반영)
+// 한성소연 동유럽 여행 일정 (구글 시트 3차 최신 셀 D4 Pork's 반영 버전)
 // 기간: 2026년 8월 6일(목) ~ 8월 17일(월) (10박 12일)
 // 경로: 프라하 → 잘츠부르크 → 인스부르크 → 빈 → 부다페스트
 // =========================================================
 
 export const INITIAL_TRIP_INFO = {
-  title: "한성소연 동유럽 일정 V3 🗺️",
+  title: "한성소연 동유럽 일정 V4 🗺️",
   period: "2026년 8월 6일(목) ~ 8월 17일(월) (10박 12일)",
   cities: ["프라하", "잘츠부르크", "인스부르크", "빈", "부다페스트"],
   checkpoints: [
+    "[8/6 프라하 저녁 D4] Pork's Mostecka (카를교 옆 꼴레뇨 대표 맛집) 저녁 식사",
     "[8/6 프라하] 공항 기차역 없음 → 볼트(Bolt) 앱 + 트래블월렛 카드 연동 필수",
     "[8/8 이동] 프라하→잘츠부르크 기차표 10:21 표로 08:21 조기 출발 권장 (환승 3회 가능성)",
     "[8/9 잘츠부르크] 호텔 카운터에서 '게스트 모빌리티 티켓' 필수 수령 (할슈타트 150X번 버스 무료)",
@@ -28,7 +29,7 @@ export const SAMPLE_ITINERARY = [
     day: 1,
     date: "8. 6(목)",
     time: "10:45",
-    city: "인천",
+    city: "프라하",
     title: "인천 T2 -> 프라하 T1 (아시아나 항공)",
     location: "인천국제공항 제2여객터미널",
     lat: 37.4602,
@@ -43,12 +44,12 @@ export const SAMPLE_ITINERARY = [
     date: "8. 6(목)",
     time: "16:45",
     city: "프라하",
-    title: "공항 -> 시내 숙소 이동 (Bolt 택시)",
+    title: "프라하 공항 -> 숙소 이동 (Bolt 택시)",
     location: "바츨라프 하벨 프라하 공항 (PRG)",
     lat: 50.1018,
     lng: 14.2632,
     category: "transport",
-    notes: "볼트(Bolt) 앱 택시 이용하여 시내 이동 | 트래블월렛 카드 결제",
+    notes: "볼트(Bolt) 택시 이용하여 숙소 이동 | 트래블월렛 카드 연동 | 공항 내 기차역 없음",
     highlights: ["⚠️ 프라하 공항에는 기차역이 없으므로 볼트 택시 추천", "공항에서 구시가지 숙소까지 약 30~40분 소요"]
   },
   {
@@ -57,13 +58,13 @@ export const SAMPLE_ITINERARY = [
     date: "8. 6(목)",
     time: "18:00",
     city: "프라하",
-    title: "저녁 식사 — Ribs of Prague (꼴레뇨)",
-    location: "Ribs of Prague, 프라하",
-    lat: 50.0841,
-    lng: 14.4190,
+    title: "저녁 식사 (pork's mostecka)",
+    location: "Pork's (Mostecká 16), 프라하",
+    lat: 50.0877,
+    lng: 14.4072,
     category: "food",
-    notes: "체코 전통 꼴레뇨(학세/돼지 족발 구이) 저녁 식사",
-    highlights: ["겉바속촉 꼴레뇨와 수제 맥주 추천 명소", "저녁 인기 맛집이므로 웨이팅 유의"]
+    notes: "꼴레뇨 저녁 식사 | 카를교 입구 Mostecká 거리 위치",
+    highlights: ["🍖 Pork's (Pork's Mostecka): 프라하에서 가장 유명한 겉바속촉 꼴레뇨(돼지족발 구이) & 필스너 우르켈 생맥주 맛집", "카를교 바로 옆 Mostecká 16번지에 위치하여 저녁 식사 후 카를교 야경 산책 동선 완벽"]
   },
   {
     id: "d1-4",
@@ -71,7 +72,7 @@ export const SAMPLE_ITINERARY = [
     date: "8. 6(목)",
     time: "19:30",
     city: "프라하",
-    title: "구시가지 산책 & 카를교 야경",
+    title: "구시가지 산책 & 카를교",
     location: "카를교 (Karlův most), 프라하",
     lat: 50.0865,
     lng: 14.4114,
@@ -89,7 +90,7 @@ export const SAMPLE_ITINERARY = [
     date: "8. 7(금)",
     time: "08:00",
     city: "프라하",
-    title: "조식 (호텔 엠버서더 즐라타 후사)",
+    title: "조식",
     location: "Ambassador Zlata Husa Hotel Prague",
     lat: 50.0821,
     lng: 14.4263,
@@ -108,7 +109,7 @@ export const SAMPLE_ITINERARY = [
     lat: 50.0909,
     lng: 14.4005,
     category: "sightseeing",
-    notes: "성 비투스 대성당, 황금가지길, 구왕궁 관람 | 프라하성 통합권 구매 필요 | 숙소에서 도보 12분",
+    notes: "성 비투스 대성당, 황금가지, 구왕궁 관람 | 프라하성 통합권 구매 필요 | 숙소에서 도보 12분",
     highlights: ["🏰 성 비투스 대성당: 14세기 고딕 건축의 정수, 역대 보헤미아 국왕 묘지", "🥇 황금가지길: 연금술사 거주지 및 카프카 작업실(No.22)", "매시 정각 프라하성 정문 근위병 교대식 관람"]
   },
   {
@@ -117,12 +118,12 @@ export const SAMPLE_ITINERARY = [
     date: "8. 7(금)",
     time: "13:00",
     city: "프라하",
-    title: "점심 식사 (구시가지 광장 주변)",
+    title: "점심 식사",
     location: "구시가지 광장 (Staroměstské náměstí)",
     lat: 50.0874,
     lng: 14.4213,
     category: "food",
-    notes: "구시가지 광장 주변 레스토랑 점심 식사",
+    notes: "구시가지 광장 주변 점심 식사",
     highlights: ["체코 전통 쇠고기 요리 스비치코바(Svíčková) 맛보기 추천"]
   },
   {
@@ -145,7 +146,7 @@ export const SAMPLE_ITINERARY = [
     date: "8. 7(금)",
     time: "18:00",
     city: "프라하",
-    title: "저녁 식사 & 재즈바 라이브 공연",
+    title: "저녁 식사 & 재즈바",
     location: "Reduta Jazz Club, 프라하",
     lat: 50.0818,
     lng: 14.4177,
@@ -162,8 +163,8 @@ export const SAMPLE_ITINERARY = [
     day: 3,
     date: "8. 8(토)",
     time: "07:00",
-    city: "프라하",
-    title: "조식 & 이동 간식 도시락 준비",
+    city: "잘츠부르크",
+    title: "조식",
     location: "Ambassador Zlata Husa Hotel Prague",
     lat: 50.0821,
     lng: 14.4263,
@@ -176,13 +177,13 @@ export const SAMPLE_ITINERARY = [
     day: 3,
     date: "8. 8(토)",
     time: "08:21",
-    city: "프라하",
-    title: "⚠️ 프라하 -> 잘츠부르크 이동 (08:21 조기 출발 권장)",
+    city: "잘츠부르크",
+    title: "프라하 -> 잘츠부르크 이동",
     location: "Praha hlavní nádraží (프라하 중앙역)",
     lat: 50.0831,
     lng: 14.4358,
     category: "transport",
-    notes: "체코/오스트리아 국경 이동 (대체 버스 포함 환승 3회 가능성) | 기차표 10:21 표로 08:21 조기 출발 권장 | 8:21 출발 시 가장 빠름",
+    notes: "체코/오스트리아 국경 이동 (대체 버스 포함 환승 3회 가능성) | 기차표 (10:21 표로 8:21 조기 출발 권장) | 8:21 출발 시 가장 빠름",
     highlights: ["기존 표로 이른 시간대(08:21) 탑승하여 잘츠부르크 가장 빠르게 도착", "린츠 구간 공사/대체버스 환승 안내 방송 유의"]
   },
   {
@@ -205,7 +206,7 @@ export const SAMPLE_ITINERARY = [
     date: "8. 8(토)",
     time: "15:00",
     city: "잘츠부르크",
-    title: "잘츠부르크 구시가지 & 모차르트 생가",
+    title: "잘츠부르크 구시가지",
     location: "Getreidegasse, 잘츠부르크",
     lat: 47.8000,
     lng: 13.0425,
@@ -219,7 +220,7 @@ export const SAMPLE_ITINERARY = [
     date: "8. 8(토)",
     time: "18:30",
     city: "잘츠부르크",
-    title: "저녁 식사 (구시가지 근처)",
+    title: "저녁 식사",
     location: "잘츠부르크 구시가지",
     lat: 47.7995,
     lng: 13.0430,
@@ -233,12 +234,12 @@ export const SAMPLE_ITINERARY = [
     date: "8. 8(토)",
     time: "20:30",
     city: "잘츠부르크",
-    title: "🎻 부다페스트 오케스트라 연주회 (Felsenreitschule)",
+    title: "부다페스트 오케스트라 연주회",
     location: "Felsenreitschule, 잘츠부르크",
     lat: 47.7981,
     lng: 13.0402,
     category: "event",
-    notes: "20:30 - 22:30 | Felsenreitschule 공연장 클래식 연주 감상 | 공연 e-티켓(PDF) 사전 준비 필수 | 헬브룬 궁전은 생략",
+    notes: "Felsenreitschule 공연장 클래식 연주 감상 | 공연 e-티켓(PDF) 사전 준비 필수 | 헬브룬 궁전은 생략",
     highlights: ["🎬 영화 '사운드 오브 뮤직'의 본 트랩 일가 합창 대회 촬영지", "17세기 묀히스부르크 암벽을 깎아 만든 3단 아치형 야외 대극장"]
   },
 
@@ -251,7 +252,7 @@ export const SAMPLE_ITINERARY = [
     date: "8. 9(일)",
     time: "08:00",
     city: "잘츠부르크",
-    title: "잘츠부르크 -> 할슈타트 이동 (150X번 버스)",
+    title: "잘츠부르크 -> 할슈타트",
     location: "잘츠부르크 중앙역 버스 터미널",
     lat: 47.8131,
     lng: 13.0460,
@@ -265,7 +266,7 @@ export const SAMPLE_ITINERARY = [
     date: "8. 9(일)",
     time: "09:00",
     city: "잘츠부르크",
-    title: "할슈타트 & 고사우제 호수 산책",
+    title: "할슈타트 & 고사우제",
     location: "할슈타트 (Hallstatt)",
     lat: 47.5622,
     lng: 13.6493,
@@ -279,7 +280,7 @@ export const SAMPLE_ITINERARY = [
     date: "8. 9(일)",
     time: "13:30",
     city: "잘츠부르크",
-    title: "할슈타트 -> 잘츠부르크 복귀",
+    title: "할슈타트 -> 잘츠부르크",
     location: "잘츠부르크 시내 복귀",
     lat: 47.8095,
     lng: 13.0550,
@@ -293,7 +294,7 @@ export const SAMPLE_ITINERARY = [
     date: "8. 9(일)",
     time: "15:00",
     city: "잘츠부르크",
-    title: "호엔잘츠부르크 성 전망대 & 관람",
+    title: "호엔잘츠부르크 성",
     location: "호엔잘츠부르크 성 (Festung Hohensalzburg)",
     lat: 47.7948,
     lng: 13.0471,
@@ -307,7 +308,7 @@ export const SAMPLE_ITINERARY = [
     date: "8. 9(일)",
     time: "18:00",
     city: "잘츠부르크",
-    title: "Augustinerbräu 야외 맥주집 & 묀히스부르크 야경",
+    title: "저녁 식사 및 전망대 야경",
     location: "Augustinerbräu Kloster Mülln, 잘츠부르크",
     lat: 47.8055,
     lng: 13.0332,
@@ -324,8 +325,8 @@ export const SAMPLE_ITINERARY = [
     day: 5,
     date: "8.10(월)",
     time: "08:00",
-    city: "잘츠부르크",
-    title: "미라벨 궁전 & 브런치 (노케를 맛보기)",
+    city: "인스부르크",
+    title: "미라벨 궁전 & 브런치",
     location: "미라벨 궁전 (Schloss Mirabell)",
     lat: 47.8058,
     lng: 13.0416,
@@ -339,12 +340,12 @@ export const SAMPLE_ITINERARY = [
     date: "8.10(월)",
     time: "11:56",
     city: "인스부르크",
-    title: "잘츠부르크 -> 인스부르크 이동 (RJX 19952)",
+    title: "잘츠부르크 -> 인스부르크 이동",
     location: "Salzburg Hauptbahnhof (잘츠부르크 중앙역)",
     lat: 47.8130,
     lng: 13.0457,
     category: "transport",
-    notes: "RJX 19952 기차 이동 (11:56 -> 14:11) | 열차 지정석 (복도 64 / 창가 66)",
+    notes: "RJX 19952 기차 이동 | 열차 지정석 (복도 64 / 창가 66)",
     highlights: ["차창 밖으로 펼쳐지는 오스트리아 알프스 산맥 풍경 감상"]
   },
   {
@@ -367,7 +368,7 @@ export const SAMPLE_ITINERARY = [
     date: "8.10(월)",
     time: "15:00",
     city: "인스부르크",
-    title: "인스부르크 구시가지 (황금 지붕 & 헬블링하우스)",
+    title: "인스부르크 구시가지",
     location: "황금지붕 (Goldenes Dachl), 인스부르크",
     lat: 47.2686,
     lng: 11.3933,
@@ -381,7 +382,7 @@ export const SAMPLE_ITINERARY = [
     date: "8.10(월)",
     time: "19:00",
     city: "인스부르크",
-    title: "저녁 식사 (티롤 지방 전통 음식)",
+    title: "저녁 식사",
     location: "인스부르크 구시가지",
     lat: 47.2680,
     lng: 11.3940,
@@ -399,12 +400,12 @@ export const SAMPLE_ITINERARY = [
     date: "8.11(화)",
     time: "09:00",
     city: "인스부르크",
-    title: "노르트케테 케이블카 (알프스 정상 하이킹)",
+    title: "노르트케테 케이블카",
     location: "Nordkettenbahnen Station, 인스부르크",
     lat: 47.2694,
     lng: 11.3955,
     category: "sightseeing",
-    notes: "09:00 - 14:00 | 알프스 산맥 전망대 관람 및 하이킹 | 노르트케테 왕복 케이블카 티켓 | 날씨 좋은 시간대 방문",
+    notes: "알프스 산맥 전망대 관람 및 하이킹 | 노르트케테 왕복 케이블카 티켓 | 날씨 좋은 시간대 방문",
     highlights: ["🚡 자하 하디드가 설계한 미래지향적 빙하 모양 역 건축물", "하펠레카르(Hafelekar, 2,334m) 정상에서 인스부르크 시내와 알프스 파노라마 360도 감상", "여름에도 서늘한 알프스 바람과 하이킹 트레일 체험"]
   },
   {
@@ -413,12 +414,12 @@ export const SAMPLE_ITINERARY = [
     date: "8.11(화)",
     time: "14:00",
     city: "인스부르크",
-    title: "인스부르크 인강 변 산책 & 시내 자유 시간",
+    title: "인스부르크 시내 산책",
     location: "인강 (River Inn), 인스부르크",
     lat: 47.2690,
     lng: 11.3910,
     category: "sightseeing",
-    notes: "14:00 - 18:00 | 인강 변 산책 및 자유 시간",
+    notes: "인강 변 산책 및 자유 시간",
     highlights: ["알프스 산맥 밑으로 흐르는 알록달록한 파스텔톤 하우스 줄지어 있는 인강 강변 포토존"]
   },
   {
@@ -437,20 +438,20 @@ export const SAMPLE_ITINERARY = [
   },
 
   // ============================================================
-  // DAY 7 — 8.12(수) 인스부르크 → 빈 (★ 함께 일정 시작!)
+  // DAY 7 — 8.12(수) 인스부르크 → 빈 (★ 함께 일정)
   // ============================================================
   {
     id: "d7-1",
     day: 7,
     date: "8.12(수)",
     time: "08:48",
-    city: "인스부르크",
-    title: "인스부르크 -> 비엔나 중앙역 이동 (RJX 19983)",
+    city: "빈",
+    title: "인스부르크 -> 비엔나 중앙역",
     location: "Innsbruck Hauptbahnhof",
     lat: 47.2631,
     lng: 11.4010,
     category: "transport",
-    notes: "RJX 19983 기차 이동 (08:48 -> 13:32) | 기차 예약 완료",
+    notes: "RJX 19983 기차 이동 | 기차 예약 완료",
     highlights: ["알프스에서 오스트리아 수도 비엔나로 약 4시간 40분 열차 이동"]
   },
   {
@@ -459,12 +460,12 @@ export const SAMPLE_ITINERARY = [
     date: "8.12(수)",
     time: "13:32",
     city: "빈",
-    title: "호텔 체크인 (레오나르도 호텔 하우프트반호프)",
+    title: "레오나르도 호텔 비엔나 하우프트반호프",
     location: "Leonardo Hotel Vienna Hauptbahnhof",
     lat: 48.1852,
     lng: 16.3768,
     category: "hotel",
-    notes: "짐 보관 및 체크인 | 도시세 포함 (조식 X) | 비엔나 중앙역 바로 맞은편 위치",
+    notes: "짐 보관 및 체크인 | 도시세 포함 (조식 X)",
     highlights: []
   },
   {
@@ -478,7 +479,7 @@ export const SAMPLE_ITINERARY = [
     lat: 48.2097,
     lng: 16.3702,
     category: "transport",
-    notes: "대중교통 이동 | 비엔나 교통권 이용",
+    notes: "대중교통 이동 | 교통권 이용",
     highlights: []
   },
   {
@@ -487,12 +488,12 @@ export const SAMPLE_ITINERARY = [
     date: "8.12(수)",
     time: "15:00",
     city: "빈",
-    title: "🎵 성베드로성당 오르간 연주 [함께]",
+    title: "성베드로성당 오르간 연주 [함께]",
     location: "성베드로성당 (Peterskirche), 빈",
     lat: 48.2097,
     lng: 16.3702,
     category: "event",
-    notes: "15:00 - 15:45 | 15:00 정시 시작 무료 오르간 연주 감상 | 무료 입장",
+    notes: "15:00 정시 시작 무료 오르간 연주 감상 | 무료 입장",
     highlights: ["🎹 매일 15:00 무료로 열리는 바로크 교회 오르간 라이브 공연", "빈에서 두 번째로 오래된 성당, 돔 천장의 화려한 황금 프레스코화"]
   },
   {
@@ -501,12 +502,12 @@ export const SAMPLE_ITINERARY = [
     date: "8.12(수)",
     time: "15:45",
     city: "빈",
-    title: "☕ 카페 데멜 (Café Demel) & 그라벤 [함께]",
+    title: "카페 데멜 (Café Demel) & 그라벤 [함께]",
     location: "Café Demel (Kohlmarkt 14), 빈",
     lat: 48.2086,
     lng: 16.3675,
     category: "cafe",
-    notes: "15:45 - 16:30 | 왕실 납품 베이커리 수제 디저트 구경 및 디저트 맛보기 | 카페 이용료",
+    notes: "왕실 납품 베이커리 수제 디저트 구경 및 디저트 맛보기 | 카페 이용료",
     highlights: ["🍰 1786년 오픈한 합스부르크 황실 공식 납품 베이커리(K.u.K. Hofzuckerbäcker)", "유리창 너머로 장인들이 케이크를 만드는 제과 주방 관람 가능", "황후 시시(Sisi)가 사랑했던 제비꽃 설탕 절임과 자허토르테 추천"]
   },
   {
@@ -515,12 +516,12 @@ export const SAMPLE_ITINERARY = [
     date: "8.12(수)",
     time: "16:30",
     city: "빈",
-    title: "🎂 Vollpension Generationencafé [함께]",
+    title: "Vollpension Generationencafé [함께]",
     location: "Vollpension (Johannesgasse 4A), 빈",
     lat: 48.2045,
     lng: 16.3718,
     category: "cafe",
-    notes: "16:30 - 18:00 | 할머니들이 직접 구워주시는 정통 수제 케이크 & 커피 | Johannesgasse 4A 위치 | 할머니 손맛 케이크 추천 맛집",
+    notes: "할머니들이 직접 구워주시는 정통 수제 케이크 & 커피 | Johannesgasse 4A 위치 | 할머니 손맛 케이크 추천 맛집",
     highlights: ["👵 오스트리아 할머니, 할아버지 파티시에들이 직접 홈메이드 레시피로 케이크를 굽는 세대 통합 따뜻한 카페", "빈티지하고 아늑한 거실 인테리어에서 즐기는 오스트리아 정통 할머니 손맛 케이크"]
   },
   {
@@ -529,12 +530,12 @@ export const SAMPLE_ITINERARY = [
     date: "8.12(수)",
     time: "18:00",
     city: "빈",
-    title: "⛪ 슈테판 대성당 & 구시가지 [함께]",
+    title: "슈테판 대성당 & 구시가지 [함께]",
     location: "슈테판 대성당 (Stephansdom), 빈",
     lat: 48.2085,
     lng: 16.3731,
     category: "sightseeing",
-    notes: "18:00 - 19:30 | 137m 첨탑, 대리석 강론대, 슈테판 광장 산책, 성당 내부 관람",
+    notes: "137m 첨탑, 대리석 강론대, 슈테판 광장 산책, 성당 내부 관람",
     highlights: ["⛪ 1147년 착공된 빈의 상징, 모자이크 지붕 타일이 매력적인 고딕 대성당", "👀 숨은 포인트: 1515년 안톤 필그림이 만든 대리석 강론대 계단 아래 창문을 열고 바라보는 조각가의 자화상", "그라벤 거리와 슈테판 광장의 화려한 저녁 분위기"]
   },
   {
@@ -543,7 +544,7 @@ export const SAMPLE_ITINERARY = [
     date: "8.12(수)",
     time: "19:30",
     city: "빈",
-    title: "🍽️ 저녁 식사 & 비엔나 야경 [함께]",
+    title: "저녁 식사 & 비엔나 야경 [함께]",
     location: "비엔나 구시가지",
     lat: 48.2080,
     lng: 16.3720,
@@ -553,7 +554,7 @@ export const SAMPLE_ITINERARY = [
   },
 
   // ============================================================
-  // DAY 8 — 8.13(목) 빈 (★ 함께 일정 2일차 - 오픈런 및 궁전)
+  // DAY 8 — 8.13(목) 빈 (★ 함께 일정)
   // ============================================================
   {
     id: "d8-1",
@@ -561,12 +562,12 @@ export const SAMPLE_ITINERARY = [
     date: "8.13(목)",
     time: "09:00",
     city: "빈",
-    title: "🖼️ 벨베데레 상궁 (Upper Belvedere) 오픈런 [함께]",
+    title: "벨베데레 상궁 (Upper Belvedere) 오픈런 [함께]",
     location: "Oberes Belvedere (벨베데레 상궁)",
     lat: 48.1915,
     lng: 16.3809,
     category: "sightseeing",
-    notes: "09:00 - 11:00 | 오픈 직후 여유롭게 클림트 <키스>, <유디트> 원화 감상 & 정원 산책 | 상궁 2인 티켓 (1인 약 23€) / 09:00 오픈 첫 타임슬롯 예매 | 오전에 사람이 적어 쾌적함",
+    notes: "오픈 직후 여유롭게 클림트 <키스>, <유디트> 원화 감상 & 정원 산책 | 상궁 2인 티켓 (1인 약 23€) / 09:00 오픈 첫 타임슬롯 예매 | 오전에 사람이 적어 쾌적함",
     highlights: ["💋 구스타프 클림트 대표작 <키스(Der Kuss)>, <유디트>가 소장된 세계 최대 클림트 갤러리", "💡 09:00 첫 타임슬롯 오픈런으로 단체 관광객 없이 고요하고 여유로운 원화 감상!", "에곤 쉴레, 오스카 코코슈카의 명화 및 화려한 바로크 정원 산책"]
   },
   {
@@ -575,12 +576,12 @@ export const SAMPLE_ITINERARY = [
     date: "8.13(목)",
     time: "11:00",
     city: "빈",
-    title: "트램(D번) 탑승 -> 마리아 테레지아 광장 이동",
+    title: "벨베데레 상궁 -> 미술사박물관",
     location: "마리아 테레지아 광장 (Maria-Theresien-Platz)",
     lat: 48.2046,
     lng: 16.3614,
     category: "transport",
-    notes: "11:00 - 11:20 | 트램(D번) 타고 마리아 테레지아 광장 이동 | 교통권 이용",
+    notes: "트램(D번) 타고 마리아 테레지아 광장 이동 | 교통권 이용",
     highlights: ["비엔나 클래식 트램을 타고 링슈트라세를 따라 이동"]
   },
   {
@@ -589,12 +590,12 @@ export const SAMPLE_ITINERARY = [
     date: "8.13(목)",
     time: "11:20",
     city: "빈",
-    title: "🏛️ 미술사박물관 (KHM) 두루두루 관람 [함께]",
+    title: "미술사박물관 (KHM) 두루두루 관람 [함께]",
     location: "미술사박물관 (Kunsthistorisches Museum Wien)",
     lat: 48.2037,
     lng: 16.3618,
     category: "sightseeing",
-    notes: "11:20 - 13:20 | 1층 이집트·바빌로니아관(파라오관/미라) & 2층 회화관 명화 감상 | 2인 티켓 (1인 약 22€) | 에어컨 가동으로 매우 쾌적",
+    notes: "1층 이집트·바빌로니아관(파라오관/미라) & 2층 회화관 명화 감상 | 2인 티켓 (1인 약 22€) | 에어컨 가동으로 매우 쾌적",
     highlights: ["👑 합스부르크 황실의 엄청난 예술 수집품을 자랑하는 세계적 박물관", "1층 이집트/근동 컬렉션: 파라오 유물, 신비로운 이집트 미라와 바빌로니아 유적", "2층 회화관: 브뤼겔 <바벨탑>, 벨라스케스, 라파엘로, 렘브란트 등 미술사 교과서 명화 대거 소장"]
   },
   {
@@ -603,12 +604,12 @@ export const SAMPLE_ITINERARY = [
     date: "8.13(목)",
     time: "13:20",
     city: "빈",
-    title: "🍽️ 점심 식사 [함께] — 미술사박물관 돔 카페",
+    title: "점심 식사 [함께]",
     location: "Café im Kunsthistorischen Museum, 빈",
     lat: 48.2037,
     lng: 16.3618,
     category: "food",
-    notes: "13:20 - 14:30 | 미술사박물관 내 웅장한 돔 카페에서 식사 및 디저트 | 세계에서 가장 아름다운 박물관 카페",
+    notes: "미술사박물관 내 웅장한 돔 카페에서 식사 및 디저트 | 세계에서 가장 아름다운 박물관 카페",
     highlights: ["☕ 대리석 기둥과 화려한 천장 프레스코화 돔 아래에 위치한 세계에서 가장 아름다운 카페", "고풍스러운 박물관 분위기 속에서 즐기는 런치 메뉴와 커피, 케이크"]
   },
   {
@@ -617,12 +618,12 @@ export const SAMPLE_ITINERARY = [
     date: "8.13(목)",
     time: "14:30",
     city: "빈",
-    title: "👑 호프부르크 왕궁 [함께] (시시 박물관)",
+    title: "호프부르크 왕궁 [함께]",
     location: "호프부르크 (Hofburg Wien)",
     lat: 48.2065,
     lng: 16.3652,
     category: "sightseeing",
-    notes: "14:30 - 16:30 | 황제 거실 & 시시 박물관 (합스부르크가의 화려한 의상/가구/생활양식) | Sisi Museum 2인 티켓 (1인 약 20€) | 도보 5분 거리",
+    notes: "황제 거실 & 시시 박물관 (합스부르크가의 화려한 의상/가구/생활양식) | Sisi Museum 2인 티켓 (1인 약 20€) | 도보 5분 거리",
     highlights: ["🏰 600년 동안 합스부르크 황제들이 거주했던 웅장한 겨울 왕궁", "👑 시시 박물관(Sisi Museum): 비운의 황후 엘리자베스(시시)의 뷰티 팁, 화려한 드레스와 보석, 프라이빗 생활 공간 관람", "황제의 아파트먼트(Kaiserappartements): 프란츠 요제프 황제와 시시 황후의 원래 거실 및 침실"]
   },
   {
@@ -631,12 +632,12 @@ export const SAMPLE_ITINERARY = [
     date: "8.13(목)",
     time: "16:30",
     city: "빈",
-    title: "저녁 식사 및 비엔나 야경 [함께]",
+    title: "저녁 식사 및 자유 시간 [함께]",
     location: "비엔나 시내 중심가",
     lat: 48.2080,
     lng: 16.3710,
     category: "food",
-    notes: "16:30 - | 시내 저녁 식사 및 비엔나 야경 | 숙소: 레오나르도 호텔 비엔나",
+    notes: "시내 저녁 식사 및 비엔나 야경 | 숙소: 레오나르도 호텔 비엔나",
     highlights: ["비엔나에서의 마지막 밤, 국립 오페라 극장(Staatsoper) 야경 산책"]
   },
 
@@ -648,13 +649,13 @@ export const SAMPLE_ITINERARY = [
     day: 9,
     date: "8.14(금)",
     time: "09:00",
-    city: "빈",
-    title: "호텔 체크아웃 -> 비엔나 중앙역(Wien Hbf) 이동",
+    city: "부다페스트",
+    title: "호텔 -> 비엔나 중앙역(Wien Hbf)",
     location: "Wien Hauptbahnhof (빈 중앙역)",
     lat: 48.1852,
     lng: 16.3768,
-    category: "hotel",
-    notes: "09:00 - 09:30 | 체크아웃 후 역으로 이동",
+    category: "transport",
+    notes: "체크아웃 후 이동",
     highlights: []
   },
   {
@@ -662,13 +663,13 @@ export const SAMPLE_ITINERARY = [
     day: 9,
     date: "8.14(금)",
     time: "09:42",
-    city: "빈",
-    title: "⚠️ 빈 -> 부다페스트 Keleti 이동 (RJX 19929)",
+    city: "부다페스트",
+    title: "비엔나 -> 부다페스트 Keleti",
     location: "Wien Hauptbahnhof",
     lat: 48.1852,
     lng: 16.3768,
     category: "transport",
-    notes: "09:42 - 12:35 | RJX 19929 기차 이동 | 기차 지정석 (복도 38 / 창가 32) | 열차 시각 변경 완료 (09:42 출발)",
+    notes: "RJX 19929 기차 이동 | 기차 지정석 (복도 38 / 창가 32) | 열차 시각 변경 완료 (09:42 출발)",
     highlights: ["변경 확정된 09:42 출발 열차 탑승 -> 부다페스트 켈레티역 12:35 도착"]
   },
   {
@@ -677,12 +678,12 @@ export const SAMPLE_ITINERARY = [
     date: "8.14(금)",
     time: "12:35",
     city: "부다페스트",
-    title: "호텔 체크인 (부티크 빅토리아 호텔)",
+    title: "부티크 빅토리아 호텔",
     location: "Boutique Hotel Victoria Budapest",
     lat: 47.5011,
     lng: 19.0392,
     category: "hotel",
-    notes: "12:35 - 13:30 | 체크인 및 짐 보관 | 숙소: 부티크 빅토리아 (조식 O / 도시세 포함)",
+    notes: "체크인 및 짐 보관 | 숙소: 부티크 빅토리아 (조식 O / 도시세 포함)",
     highlights: ["도나우 강변 바로 앞, 국회의사당 정면 뷰를 자랑하는 명소 호텔"]
   },
   {
@@ -691,12 +692,12 @@ export const SAMPLE_ITINERARY = [
     date: "8.14(금)",
     time: "13:30",
     city: "부다페스트",
-    title: "중앙재래시장 (Nagy Vásárcsarnok) & 점심",
+    title: "중앙재래시장",
     location: "중앙재래시장 (Nagy Vásárcsarnok), 부다페스트",
     lat: 47.4870,
     lng: 19.0591,
     category: "food",
-    notes: "13:30 - 16:00 | 시장 구경 및 랑고스 등 점심 식사 | 시장 자율 구매",
+    notes: "시장 구경 및 랑고스 등 점심 식사 | 시장 자율 구매",
     highlights: ["🌶️ 1896년 완공된 헝가리 최대 규모 네오고딕 실내 시장", "2층 푸드코트에서 헝가리 명물 튀김 빵 랑고스(Lángos)와 굴라쉬 맛보기", "헝가리 특산품 파프리카 가루와 토카이 와인 쇼핑"]
   },
   {
@@ -705,12 +706,12 @@ export const SAMPLE_ITINERARY = [
     date: "8.14(금)",
     time: "16:00",
     city: "부다페스트",
-    title: "겔레르트 언덕 & 어부의 요새 산책",
+    title: "겔레르트 언덕 & 어부의 요새",
     location: "어부의 요새 (Halászbástya), 부다페스트",
     lat: 47.5022,
     lng: 19.0348,
     category: "sightseeing",
-    notes: "16:00 - 19:00 | 언덕 산책(파노라마 전경) 및 로마네스크 양식 어부의 요새 | 어부의 요새 일부 구역 무료",
+    notes: "언덕 산책(파노라마 전경) 및 로마네스크 양식 어부의 요새 | 어부의 요새 일부 구역 무료",
     highlights: ["🏰 어부의 요새: 7개의 흰색 회랑 탑(마자르 7부족 상징)이 동화 같은 로마네스크 요새", "어부의 요새 아치 틈 사이로 바라보는 다뉴브강과 국회의사당 인생샷", "인접한 마차시 성당(헝가리 국왕 대관식 성당) 조망"]
   },
   {
@@ -724,7 +725,7 @@ export const SAMPLE_ITINERARY = [
     lat: 47.5030,
     lng: 19.0348,
     category: "night",
-    notes: "19:00 - 21:00 | 포르투너 거리 식사 및 세계적인 도나우강 야경 감상 | 숙소: 부티크 빅토리아",
+    notes: "포르투너 거리 식사 및 세계적인 도나우강 야경 감상 | 숙소: 부티크 빅토리아",
     highlights: ["🌃 황금빛으로 물드는 부다페스트 국회의사당과 체인브리지 세계 3대 야경 관람", "어부의 요새 야경 시간대 방문 시 몽환적인 밤 풍경"]
   },
 
@@ -737,12 +738,12 @@ export const SAMPLE_ITINERARY = [
     date: "8.15(토)",
     time: "08:00",
     city: "부다페스트",
-    title: "조식 & 아난타라 뉴욕 호텔로 숙소 이동",
+    title: "조식 및 숙소 이동",
     location: "Anantara New York Palace Budapest Hotel",
     lat: 47.4986,
     lng: 19.0707,
     category: "hotel",
-    notes: "08:00 - 09:30 | 조식 후 아난타라 뉴욕 호텔로 숙소 이동 | 숙소: 아난타라 뉴욕 호텔 (조식 O / 도시세 15€)",
+    notes: "조식 후 아난타라 뉴욕 호텔로 숙소 이동 | 숙소: 아난타라 뉴욕 호텔 (조식 O / 도시세 15€)",
     highlights: ["1894년 완공된 뉴욕 궁전(New York Palace) 건물에 위치한 5성급 럭셔리 호텔"]
   },
   {
@@ -751,12 +752,12 @@ export const SAMPLE_ITINERARY = [
     date: "8.15(토)",
     time: "09:30",
     city: "부다페스트",
-    title: "에르제베트 다리 & 겔레르트 언덕 산책",
+    title: "에르제베트 다리 & 겔레르트 언덕",
     location: "겔레르트 언덕 (Gellért-hegy), 부다페스트",
     lat: 47.4879,
     lng: 19.0476,
     category: "sightseeing",
-    notes: "09:30 - 13:00 | 에르제베트 다리 따라 20분 산책 및 파노라마 전경 감상",
+    notes: "에르제베트 다리 따라 20분 산책 및 파노라마 전경 감상",
     highlights: ["에르제베트 다리(시시 황후의 이름을 딴 하얀 현수교) 건너기", "겔레르트 언덕 정상 시타델(Citadella)과 자유의 여신상(Szabadság-szobor)에서 부다페스트 파노라마 감상"]
   },
   {
@@ -765,12 +766,12 @@ export const SAMPLE_ITINERARY = [
     date: "8.15(토)",
     time: "13:00",
     city: "부다페스트",
-    title: "도나우 강변 산책 & 아난타라 뉴욕카페 디저트 타임",
+    title: "도나우 강변 & 뉴욕카페",
     location: "New York Café Budapest",
     lat: 47.4986,
     lng: 19.0707,
     category: "cafe",
-    notes: "13:00 - 18:00 | 도나우 강변 산책 및 아난타라 뉴욕카페 디저트 타임 | 카페 이용료",
+    notes: "도나우 강변 산책 및 아난타라 뉴욕카페 디저트 타임 | 카페 이용료",
     highlights: ["✨ '세계에서 가장 아름다운 카페' 1위로 꼽히는 부다페스트 뉴욕 카페(New York Café)", "금박 천장, 화려한 샹들리에, 대리석 기둥 속에서 라이브 피아노/집시 음악을 들으며 즐기는 애프터눈 티"]
   },
   {
@@ -779,12 +780,12 @@ export const SAMPLE_ITINERARY = [
     date: "8.15(토)",
     time: "18:00",
     city: "부다페스트",
-    title: "저녁 식사 & 도나우강 야경 산책",
+    title: "저녁 식사 및 야경",
     location: "도나우 강변 (Danube Bank), 부다페스트",
     lat: 47.5000,
     lng: 19.0450,
     category: "night",
-    notes: "18:00 - | 도나우강 유람선 또는 야경 산책 | 숙소: 아난타라 뉴욕 호텔",
+    notes: "도나우강 유람선 또는 야경 산책 | 숙소: 아난타라 뉴욕 호텔",
     highlights: ["도나우 강변의 '신발들' 추모비 방문 및 다뉴브강 야경 유람선 탑승 권장"]
   },
 
@@ -797,12 +798,12 @@ export const SAMPLE_ITINERARY = [
     date: "8.16(일)",
     time: "08:00",
     city: "부다페스트",
-    title: "조식 & 부다페스트 시내 산책 및 쇼핑",
+    title: "조식 & 부다페스트 시내 산책",
     location: "바치 거리 (Váci utca), 부다페스트",
     lat: 47.4930,
     lng: 19.0528,
     category: "sightseeing",
-    notes: "08:00 - 12:00 | 아난타라 뉴욕 호텔 럭셔리 조식 및 쇼핑",
+    notes: "아난타라 뉴욕 호텔 럭셔리 조식 및 쇼핑",
     highlights: ["부다페스트 명동 격인 바치 거리(Váci utca)에서 마지막 기념품과 귀국 선물 쇼핑"]
   },
   {
@@ -811,12 +812,12 @@ export const SAMPLE_ITINERARY = [
     date: "8.16(일)",
     time: "16:00",
     city: "부다페스트",
-    title: "숙소 -> 부다페스트 공항 T2B 이동 (miniBUD)",
+    title: "숙소 -> 부다페스트 공항 T2B",
     location: "부다페스트 리스트 페렌츠 국제공항 T2B",
     lat: 47.4369,
     lng: 19.2556,
     category: "transport",
-    notes: "16:00 - 17:00 | miniBUD 공항 셔틀 또는 호텔 픽업 서비스 이용 | 셔틀 예약 필요",
+    notes: "miniBUD 공항 셔틀 또는 호텔 픽업 서비스 이용 | 셔틀 예약 필요",
     highlights: ["💡 miniBUD 공항 공식 셔틀 앱을 통해 픽업 시간 사전 예약 필수"]
   },
   {
@@ -825,26 +826,12 @@ export const SAMPLE_ITINERARY = [
     date: "8.16(일)",
     time: "20:00",
     city: "부다페스트",
-    title: "부다페스트 T2B 출발 (아시아나 항공)",
+    title: "부다페스트 T2B 출발",
     location: "부다페스트 리스트 페렌츠 국제공항 T2B",
     lat: 47.4369,
     lng: 19.2556,
     category: "transport",
-    notes: "20:00 출발 -> 인천공항(T2) 복귀 (8/17 13:35 도착) | 아시아나 항공",
-    highlights: []
-  },
-  {
-    id: "d12-1",
-    day: 12,
-    date: "8.17(월)",
-    time: "13:35",
-    city: "인천",
-    title: "인천 T2 안전 귀국 완료! 🎉",
-    location: "인천국제공항 제2여객터미널",
-    lat: 37.4602,
-    lng: 126.4407,
-    category: "transport",
-    notes: "10박 12일 동유럽 여행 안전 귀국 완료!",
+    notes: "인천공항(T2) 복귀 (8/17 13:35 도착) | 아시아나 항공",
     highlights: ["행복한 10박 12일 동유럽 가족 여행 대장정 완료!"]
   }
 ];
