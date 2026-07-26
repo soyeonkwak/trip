@@ -1,0 +1,141 @@
+import React, { useState } from 'react';
+import { CheckSquare, Square, AlertTriangle, Hotel, CreditCard } from 'lucide-react';
+
+export default function TravelTipsView({ tripInfo }) {
+  const [checklist, setChecklist] = useState([
+    { id: 1, text: 'Bolt 앱 설치 + 트래블월렛 카드 연동', checked: true },
+    { id: 2, text: '오스트리아 ÖBB 앱 & 체코 PID Litacka 앱 설치', checked: true },
+    { id: 3, text: '8/8 Felsenreitschule 오케스트라 e-티켓 PDF 저장 & 출력', checked: false },
+    { id: 4, text: '8/9 잘츠부르크 호텔에서 게스트 모빌리티 티켓 수령 (할슈타트 버스 무료)', checked: false },
+    { id: 5, text: '할슈타트 페리 현금 4유로/인 준비', checked: false },
+    { id: 6, text: '8/12 15:00 성베드로성당 오르간 -> 카페 데멜 -> 16:30 Vollpension 방문', checked: false },
+    { id: 7, text: '8/13 09:00 벨베데레 상궁 오픈런 -> 11:20 미술사박물관(KHM) 방문', checked: false },
+    { id: 8, text: '8/13 13:20 미술사박물관 돔 카페 점심 -> 14:30 호프부르크 왕궁(Sisi)', checked: false },
+    { id: 9, text: '8/14 RJX 19929 열차 시간 변경 확정 확인 (09:42~12:35)', checked: false },
+    { id: 10, text: '8/16 부다페스트 공항 이동 miniBUD 셔틀 사전 예약', checked: false },
+  ]);
+
+  const toggle = (id) => setChecklist(p => p.map(i => i.id === id ? { ...i, checked: !i.checked } : i));
+  const done = checklist.filter(i => i.checked).length;
+  const pct = Math.round((done / checklist.length) * 100);
+
+  const hotels = [
+    { flag:'🇨🇿', city:'프라하 (2박)', name:'엠버서더 즐라타 후사', cost:'330,000원 (환불불가)', detail:'조식 포함 | 도시세 10유로', warn: null },
+    { flag:'🇦🇹', city:'잘츠부르크 (2박)', name:'오스트리아 H+ 호텔', cost:'629,242원 (환불불가)', detail:'조식 미포함 | 도시세 14.22유로', warn:'💡 체크인 즉시 게스트 모빌리티 티켓 수령 필수!' },
+    { flag:'🇦🇹', city:'인스부르크 (2박)', name:'골든 크로네 인스부르크', cost:'407,088원 (환불불가)', detail:'조식 포함 | 도시세 16유로', warn: null },
+    { flag:'🇦🇹', city:'빈 (2박)', name:'레오나르도 호텔 하우프트반호프', cost:'345,784원 (무료취소 가능)', detail:'조식 미포함 | 도시세 포함', warn: null },
+    { flag:'🇭🇺', city:'부다페스트 1박', name:'부티크 빅토리아', cost:'265,358원 (환불불가)', detail:'조식 포함 | 도시세 포함', warn: null },
+    { flag:'🇭🇺', city:'부다페스트 2박', name:'아난타라 뉴욕 호텔', cost:'575,048원', detail:'조식 포함 | 도시세 15유로', warn:'💡 공항 이동 시 miniBUD 셔틀 예약 권장' },
+  ];
+
+  return (
+    <div className="pb-32 px-4 pt-4 space-y-4">
+
+      {/* 주요 주의사항 */}
+      <div className="trip-card p-4 border-l-4 border-orange-400">
+        <div className="flex items-center gap-2 mb-3">
+          <AlertTriangle className="w-5 h-5 text-orange-500" />
+          <h3 className="text-sm font-bold text-slate-800">필수 체크포인트 (V3 업데이트)</h3>
+        </div>
+        <div className="space-y-2">
+          {(tripInfo.checkpoints || []).map((cp, i) => (
+            <div key={i} className="flex items-start gap-2.5 p-2.5 bg-orange-50 rounded-xl border border-orange-100">
+              <span className="w-2 h-2 rounded-full bg-orange-400 mt-1.5 flex-shrink-0" />
+              <p className="text-[12px] text-slate-700 font-medium leading-relaxed">{cp}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* 체크리스트 */}
+      <div className="trip-card p-4">
+        <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center gap-2">
+            <CheckSquare className="w-5 h-5 text-sky-500" />
+            <h3 className="text-sm font-bold text-slate-800">여행 준비 체크리스트</h3>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-[11px] font-bold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-100">
+              {done}/{checklist.length}
+            </span>
+            <span className="text-[11px] font-bold text-sky-600">{pct}%</span>
+          </div>
+        </div>
+
+        {/* 진행 바 */}
+        <div className="h-2 bg-slate-100 rounded-full mb-4 overflow-hidden">
+          <div
+            className="h-full bg-gradient-to-r from-sky-400 to-emerald-400 rounded-full transition-all duration-700"
+            style={{ width: `${pct}%` }}
+          />
+        </div>
+
+        <div className="space-y-2">
+          {checklist.map(item => (
+            <button key={item.id} onClick={() => toggle(item.id)}
+              className={`w-full flex items-center gap-3 p-3 rounded-xl border text-left transition-all ${
+                item.checked
+                  ? 'bg-slate-50 border-slate-100 opacity-60'
+                  : 'bg-white border-slate-200 hover:border-sky-200 hover:bg-sky-50/50'
+              }`}>
+              {item.checked
+                ? <CheckSquare className="w-4.5 h-4.5 text-emerald-400 flex-shrink-0" style={{ width:18, height:18 }} />
+                : <Square className="w-4.5 h-4.5 text-slate-300 flex-shrink-0" style={{ width:18, height:18 }} />}
+              <span className={`text-[12px] font-medium leading-snug ${
+                item.checked ? 'text-slate-400 line-through' : 'text-slate-700'
+              }`}>{item.text}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* 숙소 정보 */}
+      <div className="trip-card p-4">
+        <div className="flex items-center gap-2 mb-3">
+          <Hotel className="w-5 h-5 text-violet-500" />
+          <h3 className="text-sm font-bold text-slate-800">도시별 숙소 & 비용</h3>
+        </div>
+        <div className="space-y-2.5">
+          {hotels.map((h, i) => (
+            <div key={i} className="p-3 bg-slate-50 rounded-2xl border border-slate-100">
+              <div className="flex items-start justify-between gap-2">
+                <div>
+                  <div className="text-xs font-bold text-slate-700">{h.flag} {h.city}</div>
+                  <div className="text-[12px] text-slate-500 mt-0.5">{h.name}</div>
+                </div>
+                <div className="text-right">
+                  <div className="text-[11px] font-bold text-sky-600 bg-sky-50 px-2 py-0.5 rounded-lg">{h.cost}</div>
+                </div>
+              </div>
+              <div className="text-[11px] text-slate-400 mt-1.5">{h.detail}</div>
+              {h.warn && <div className="text-[11px] text-amber-600 font-semibold mt-1">{h.warn}</div>}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* 결제/환전 */}
+      <div className="trip-card p-4">
+        <div className="flex items-center gap-2 mb-3">
+          <CreditCard className="w-5 h-5 text-emerald-500" />
+          <h3 className="text-sm font-bold text-slate-800">결제 & 환전 팁</h3>
+        </div>
+        <div className="space-y-2">
+          {[
+            '트래블월렛 / 트래블로그 카드 — 대부분 장소에서 결제 가능',
+            '현금 필수: 할슈타트 페리 (4유로/인) · 유료 화장실 등',
+            '소액 유로 현금 지참 권장 (코루나는 프라하 한정)',
+            'Bolt 택시: 트래블월렛 카드 사전 연동 필수',
+            '현대카드 + 국민은행 카드 모두 비상용 지참',
+          ].map((t, i) => (
+            <div key={i} className="flex items-start gap-2.5 p-2.5 bg-emerald-50 rounded-xl border border-emerald-100">
+              <span className="text-emerald-500 font-bold mt-0.5 flex-shrink-0">✓</span>
+              <p className="text-[12px] text-slate-700 font-medium">{t}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+    </div>
+  );
+}

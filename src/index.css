@@ -1,0 +1,285 @@
+/* TripIt 스타일 모바일 여행 앱 디자인 시스템 */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ===========================
+   기본 배경/폰트 (라이트 테마)
+   =========================== */
+@layer base {
+  * {
+    -webkit-tap-highlight-color: transparent;
+    box-sizing: border-box;
+  }
+
+  html {
+    font-family: 'Inter', 'Noto Sans KR', -apple-system, sans-serif;
+  }
+
+  body {
+    @apply bg-slate-100 text-slate-800 antialiased overscroll-none;
+    min-height: 100dvh;
+    /* 모바일 safe area 대응 */
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  #root {
+    max-width: 430px;
+    margin: 0 auto;
+    background: #f1f5f9;
+    min-height: 100dvh;
+    position: relative;
+    box-shadow: 0 0 40px rgba(0,0,0,0.12);
+  }
+}
+
+/* ===========================
+   스크롤바 숨기기 (모바일 깔끔)
+   =========================== */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 999px; }
+
+/* ===========================
+   상단 그라디언트 헤더
+   =========================== */
+.trip-header {
+  background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 40%, #0369a1 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.trip-header::before {
+  content: '';
+  position: absolute;
+  top: -60px;
+  right: -40px;
+  width: 200px;
+  height: 200px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 50%;
+}
+
+.trip-header::after {
+  content: '';
+  position: absolute;
+  bottom: -80px;
+  left: -30px;
+  width: 180px;
+  height: 180px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 50%;
+}
+
+/* ===========================
+   카드 스타일
+   =========================== */
+.trip-card {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04);
+  transition: box-shadow 0.2s ease, transform 0.15s ease;
+}
+
+.trip-card:active {
+  transform: scale(0.985);
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
+}
+
+/* ===========================
+   Day 섹션 구분자
+   =========================== */
+.day-section-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 0 6px;
+}
+
+.day-badge {
+  background: linear-gradient(135deg, #f97316, #ea580c);
+  color: white;
+  font-weight: 800;
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px rgba(249, 115, 22, 0.35);
+}
+
+/* ===========================
+   타임라인 라인
+   =========================== */
+.timeline-line {
+  position: absolute;
+  left: 19px;
+  top: 28px;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, #e2e8f0, transparent);
+}
+
+/* ===========================
+   카테고리 아이콘 원
+   =========================== */
+.cat-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+}
+
+.cat-transport { background: linear-gradient(135deg, #dbeafe, #bfdbfe); color: #1d4ed8; }
+.cat-hotel     { background: linear-gradient(135deg, #ede9fe, #ddd6fe); color: #5b21b6; }
+.cat-sightseeing { background: linear-gradient(135deg, #ccfbf1, #99f6e4); color: #0d9488; }
+.cat-food      { background: linear-gradient(135deg, #fef3c7, #fde68a); color: #b45309; }
+.cat-cafe      { background: linear-gradient(135deg, #ffedd5, #fed7aa); color: #c2410c; }
+.cat-night     { background: linear-gradient(135deg, #f3e8ff, #e9d5ff); color: #7c3aed; }
+.cat-event     { background: linear-gradient(135deg, #fce7f3, #fbcfe8); color: #be185d; }
+
+/* ===========================
+   하이라이트 박스 (역사·관광)
+   =========================== */
+.highlight-item {
+  background: #f0f9ff;
+  border: 1px solid #bae6fd;
+  border-radius: 10px;
+  padding: 7px 10px;
+  font-size: 12px;
+  color: #075985;
+  line-height: 1.5;
+  display: flex;
+  gap: 6px;
+  align-items: flex-start;
+}
+
+/* ===========================
+   하단 탭 바
+   =========================== */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 430px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(0,0,0,0.08);
+  padding-bottom: env(safe-area-inset-bottom);
+  z-index: 50;
+}
+
+/* ===========================
+   Leaflet 지도 라이트 테마
+   =========================== */
+.leaflet-container {
+  background-color: #e8edf2 !important;
+  font-family: inherit !important;
+}
+
+.leaflet-popup-content-wrapper {
+  background: #ffffff !important;
+  color: #0f172a !important;
+  border: none !important;
+  border-radius: 16px !important;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.15) !important;
+}
+
+.leaflet-popup-tip {
+  background: #ffffff !important;
+}
+
+.leaflet-popup-content {
+  margin: 12px 14px !important;
+}
+
+/* ===========================
+   입력창 공통 스타일
+   =========================== */
+.trip-input {
+  width: 100%;
+  background: #f8fafc;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-size: 13px;
+  color: #1e293b;
+  outline: none;
+  transition: border-color 0.2s;
+  font-family: inherit;
+}
+
+.trip-input:focus {
+  border-color: #0284c7;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.1);
+}
+
+.trip-input::placeholder {
+  color: #94a3b8;
+}
+
+/* ===========================
+   버튼 공통
+   =========================== */
+.btn-primary {
+  background: linear-gradient(135deg, #0ea5e9, #0284c7);
+  color: white;
+  font-weight: 700;
+  border-radius: 12px;
+  padding: 12px 20px;
+  font-size: 13px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s;
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
+}
+
+.btn-primary:active { transform: scale(0.97); }
+
+.btn-secondary {
+  background: #f1f5f9;
+  color: #475569;
+  font-weight: 600;
+  border-radius: 12px;
+  padding: 10px 16px;
+  font-size: 13px;
+  border: 1.5px solid #e2e8f0;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.btn-secondary:active { transform: scale(0.97); background: #e2e8f0; }
+
+/* ===========================
+   애니메이션
+   =========================== */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.animate-slide-up {
+  animation: slideUp 0.3s ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.25s ease forwards;
+}
