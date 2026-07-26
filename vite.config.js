@@ -7,13 +7,13 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
+      includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'favicon.svg'],
       manifest: {
         name: '동유럽 여행 일정 PWA (Travel Planner)',
         short_name: '여행일정',
         description: '구글 시트 연동 모바일 여행 일정 및 구글 맵 지원 PWA 앱',
-        theme_color: '#0f172a',
-        background_color: '#0f172a',
+        theme_color: '#0284c7',
+        background_color: '#f8fafc',
         display: 'standalone',
         orientation: 'portrait',
         start_url: '/',
@@ -46,7 +46,7 @@ export default defineConfig({
               cacheName: 'google-maps-cache',
               expiration: {
                 maxEntries: 50,
-                maxAgeSeconds: 60 * 60 * 24 * 30 // 30 days
+                maxAgeSeconds: 60 * 60 * 24 * 30
               },
               cacheableResponse: {
                 statuses: [0, 200]
