@@ -43,7 +43,7 @@ export function useItinerary() {
     }
   }, [itinerary, tripInfo]);
 
-  // 구글 시트 또는 커스텀 데이터 업데이트
+  // 전체 구글 시트 또는 커스텀 데이터 업데이트
   const updateItinerary = (newItinerary, customTripTitle = null) => {
     setItinerary(newItinerary);
     const nowStr = new Date().toLocaleString('ko-KR');
@@ -60,6 +60,36 @@ export function useItinerary() {
     }
   };
 
+  // 기존 일정 수정 (핸드폰 현장 일정 변경용)
+  const editItem = (updatedItem) => {
+    setItinerary(prev => prev.map(item => item.id === updatedItem.id ? updatedItem : item));
+    const nowStr = new Date().toLocaleString('ko-KR');
+    setLastSyncTime(nowStr);
+    localStorage.setItem(STORAGE_KEY_LAST_SYNC, nowStr);
+  };
+
+  // 새로운 일정 추가
+  const addItem = (item) => {
+    const newItem = {
+      ...item,
+      id: item.id || `custom-${Date.now()}`,
+      lat: item.lat || 50.0878,
+      lng: item.lng || 14.4205,
+    };
+    setItinerary(prev => [...prev, newItem]);
+    const nowStr = new Date().toLocaleString('ko-KR');
+    setLastSyncTime(nowStr);
+    localStorage.setItem(STORAGE_KEY_LAST_SYNC, nowStr);
+  };
+
+  // 일정 삭제
+  const removeItem = (id) => {
+    setItinerary(prev => prev.filter(item => item.id !== id));
+    const nowStr = new Date().toLocaleString('ko-KR');
+    setLastSyncTime(nowStr);
+    localStorage.setItem(STORAGE_KEY_LAST_SYNC, nowStr);
+  };
+
   // 기본 동유럽 10박 12일 일정으로 리셋
   const resetToDefault = () => {
     setItinerary(SAMPLE_ITINERARY);
@@ -69,23 +99,14 @@ export function useItinerary() {
     localStorage.setItem(STORAGE_KEY_LAST_SYNC, nowStr);
   };
 
-  // 새로운 항목 추가
-  const addItem = (item) => {
-    setItinerary(prev => [...prev, { ...item, id: `item-${Date.now()}` }]);
-  };
-
-  // 항목 삭제
-  const removeItem = (id) => {
-    setItinerary(prev => prev.filter(item => item.id !== id));
-  };
-
   return {
     itinerary,
     tripInfo,
     lastSyncTime,
     updateItinerary,
-    resetToDefault,
+    editItem,
     addItem,
-    removeItem
+    removeItem,
+    resetToDefault
   };
 }

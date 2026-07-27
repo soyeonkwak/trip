@@ -1,22 +1,25 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 import DaySelector from './DaySelector';
 import EventCard from './EventCard';
-import { Search, Calendar, MapPin, Clock, ChevronRight, Zap, Bell } from 'lucide-react';
+import EditEventModal from './EditEventModal';
+import { Search, Calendar, MapPin, Clock, ChevronRight, Zap, PlusCircle } from 'lucide-react';
 import { useTripTime, findCurrentAndNextEvent } from '../hooks/useTripTime';
 
-export default function TimelineView({ itinerary, onFocusMap }) {
+export default function TimelineView({ itinerary, onFocusMap, onEditItem, onAddItem, onDeleteItem }) {
   const tripTime = useTripTime();
   const [selectedDay, setSelectedDay] = useState(tripTime.currentDay);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [editingItem, setEditingItem] = useState(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const currentCardRef = useRef(null);
 
-  // 여행지 현지 시각이 바뀌면 selectedDay도 업데이트
+  // 현지 시각이 바뀌면 selectedDay 업데이트
   useEffect(() => {
     setSelectedDay(tripTime.currentDay);
   }, [tripTime.currentDay]);
 
-  // 현재 날짜의 일정들로 '지금 진행 중' / '다음 일정' 탐색
+  // 오늘 날짜 일정 중 '지금 진행 중' / '다음 일정' 찾기
   const todayItems = useMemo(() => {
     return itinerary.filter(i => i.day === tripTime.currentDay)
       .sort((a, b) => a.time.localeCompare(b.time));
@@ -57,6 +60,12 @@ export default function TimelineView({ itinerary, onFocusMap }) {
       if (!groups.has(item.day)) groups.set(item.day, []);
       groups.get(item.day).push(item);
     });
+
+    // 각 날짜 내에서는 시각 순 정렬
+    groups.forEach((items) => {
+      items.sort((a, b) => a.time.localeCompare(b.time));
+    });
+
     return Array.from(groups.entries()).sort(([a], [b]) => a - b);
   }, [filtered]);
 
@@ -69,8 +78,31 @@ export default function TimelineView({ itinerary, onFocusMap }) {
     }
   }, [selectedDay, currentEvent]);
 
+  // 수정 모달 열기
+  const handleOpenEdit = (item) => {
+    setEditingItem(item);
+    setIsEditModalOpen(true);
+  };
+
+  // 새로 추가 모달 열기
+  const handleOpenAdd = (dayNum = 1) => {
+    setEditingItem(null);
+    setSelectedDay(dayNum);
+    setIsEditModalOpen(true);
+  };
+
+  // 저장 처리
+  const handleSaveItem = (savedItem) => {
+    if (editingItem && editingItem.id) {
+      onEditItem(savedItem);
+    } else {
+      onAddItem(savedItem);
+    }
+  };
+
   return (
-    <div className="pb-32">
+    <div className="pb-32 relative">
+      
       {/* 현지 시각 & 여행 상태 배너 */}
       <TripStatusBanner tripTime={tripTime} currentEvent={currentEvent} nextEvent={nextEvent} />
 
@@ -82,8 +114,8 @@ export default function TimelineView({ itinerary, onFocusMap }) {
         todayDay={tripTime.currentDay}
       />
 
-      {/* 검색 & 필터 */}
-      <div className="px-4 py-3 bg-white border-b border-slate-100 flex gap-2">
+      {/* 검색 & 필터 & 일정 추가 바 */}
+      <div className="px-4 py-3 bg-white border-b border-slate-100 flex items-center gap-2">
         <div className="relative flex-1">
           <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
           <input
@@ -94,6 +126,7 @@ export default function TimelineView({ itinerary, onFocusMap }) {
             className="trip-input pl-9"
           />
         </div>
+        
         <select
           value={selectedCategory}
           onChange={e => setSelectedCategory(e.target.value)}
@@ -108,6 +141,15 @@ export default function TimelineView({ itinerary, onFocusMap }) {
           <option value="night">🌙 야경</option>
           <option value="event">🎟️ 행사</option>
         </select>
+
+        {/* 일정 추가 버튼 */}
+        <button
+          onClick={() => handleOpenAdd(selectedDay === 0 ? 1 : selectedDay)}
+          className="flex items-center gap-1 bg-sky-600 hover:bg-sky-700 text-white px-3 py-2 rounded-xl text-xs font-extrabold shadow-sm active:scale-95 transition-all flex-shrink-0"
+        >
+          <PlusCircle className="w-4 h-4" />
+          <span className="hidden sm:inline">일정 추가</span>
+        </button>
       </div>
 
       <div className="px-4 pt-2">
@@ -117,26 +159,31 @@ export default function TimelineView({ itinerary, onFocusMap }) {
             const isToday = day === tripTime.currentDay && tripTime.isInTrip;
 
             return (
-              <div key={day} className="mb-2">
+              <div key={day} className="mb-4">
                 {/* Day 섹션 헤더 */}
-                <div className="day-section-header">
-                  <span className={`day-badge ${isToday ? 'ring-2 ring-orange-300 ring-offset-1' : ''}`}>
-                    Day {day}
-                  </span>
-                  {isToday && (
-                    <span className="text-[10px] font-extrabold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200 flex items-center gap-1">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping inline-block" />
-                      오늘
+                <div className="day-section-header flex items-center justify-between">
+                  <div className="flex items-center gap-2 flex-1">
+                    <span className={`day-badge ${isToday ? 'ring-2 ring-orange-300 ring-offset-1' : ''}`}>
+                      Day {day}
                     </span>
-                  )}
-                  <div className="flex-1 flex items-center gap-2">
+                    {isToday && (
+                      <span className="text-[10px] font-extrabold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200 flex items-center gap-1">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping inline-block" />
+                        오늘
+                      </span>
+                    )}
                     <span className="text-sm font-bold text-slate-700">{dayInfo?.city}</span>
                     <span className="text-[11px] text-slate-400 font-medium">{dayInfo?.date}</span>
                   </div>
-                  <div className="flex items-center gap-1 text-[11px] text-slate-400 font-medium">
-                    <MapPin className="w-3 h-3 text-orange-400" />
-                    <span>{items.length}곳</span>
-                  </div>
+
+                  {/* 해당 Day에 일정 추가 버튼 */}
+                  <button
+                    onClick={() => handleOpenAdd(day)}
+                    className="text-[11px] font-bold text-sky-600 hover:text-sky-700 bg-sky-50 px-2.5 py-1 rounded-lg border border-sky-100 flex items-center gap-1 transition-all"
+                  >
+                    <PlusCircle className="w-3.5 h-3.5" />
+                    <span>추가</span>
+                  </button>
                 </div>
 
                 {/* 카드 목록 */}
@@ -169,7 +216,11 @@ export default function TimelineView({ itinerary, onFocusMap }) {
                           isCurrent ? 'ring-2 ring-emerald-400 ring-offset-2' :
                           isNext ? 'ring-1 ring-sky-300 ring-offset-1' : ''
                         }`}>
-                          <EventCard item={item} onFocusMap={onFocusMap} />
+                          <EventCard
+                            item={item}
+                            onFocusMap={onFocusMap}
+                            onEdit={handleOpenEdit}
+                          />
                         </div>
                       </div>
                     );
@@ -181,20 +232,33 @@ export default function TimelineView({ itinerary, onFocusMap }) {
         ) : (
           <div className="text-center py-16">
             <Calendar className="w-10 h-10 text-slate-300 mx-auto mb-3" />
-            <p className="text-sm font-bold text-slate-400">검색 결과가 없습니다</p>
-            <p className="text-xs text-slate-300 mt-1">검색어나 필터를 변경해 보세요</p>
+            <p className="text-sm font-bold text-slate-400">등록된 일정이 없습니다</p>
+            <button
+              onClick={() => handleOpenAdd(selectedDay === 0 ? 1 : selectedDay)}
+              className="mt-3 inline-flex items-center gap-1.5 bg-sky-600 text-white px-4 py-2 rounded-xl text-xs font-bold shadow-md shadow-sky-200"
+            >
+              <PlusCircle className="w-4 h-4" />
+              <span>새 일정 추가하기</span>
+            </button>
           </div>
         )}
       </div>
+
+      {/* 일정 추가 / 수정 모달 */}
+      <EditEventModal
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+        item={editingItem}
+        defaultDay={selectedDay === 0 ? 1 : selectedDay}
+        onSave={handleSaveItem}
+        onDelete={onDeleteItem}
+      />
     </div>
   );
 }
 
-// ===========================
-// 현지 시각 & 여행 상태 상단 배너
-// ===========================
+// 현지 시각 및 상태 상단 배너
 function TripStatusBanner({ tripTime, currentEvent, nextEvent }) {
-  // 여행 전: 카운트다운
   if (tripTime.status === 'before') {
     return (
       <div className="bg-gradient-to-r from-sky-50 to-indigo-50 border-b border-sky-100 px-4 py-3">
@@ -212,7 +276,6 @@ function TripStatusBanner({ tripTime, currentEvent, nextEvent }) {
     );
   }
 
-  // 여행 종료 후
   if (tripTime.status === 'after') {
     return (
       <div className="bg-gradient-to-r from-emerald-50 to-teal-50 border-b border-emerald-100 px-4 py-3 text-center">
@@ -222,7 +285,6 @@ function TripStatusBanner({ tripTime, currentEvent, nextEvent }) {
     );
   }
 
-  // 여행 중 배너
   return (
     <div className="bg-gradient-to-r from-emerald-500 to-teal-500 px-4 py-3 text-white">
       <div className="flex items-center justify-between mb-2">
@@ -238,7 +300,6 @@ function TripStatusBanner({ tripTime, currentEvent, nextEvent }) {
         </div>
       </div>
 
-      {/* 지금 진행 중인 일정 */}
       {currentEvent && (
         <div className="bg-white/15 rounded-2xl px-3 py-2.5">
           <p className="text-[10px] font-bold text-white/70 mb-0.5 flex items-center gap-1">
@@ -252,7 +313,6 @@ function TripStatusBanner({ tripTime, currentEvent, nextEvent }) {
         </div>
       )}
 
-      {/* 다음 일정 (진행 중인 게 없을 때) */}
       {!currentEvent && nextEvent && (
         <div className="bg-white/15 rounded-2xl px-3 py-2.5">
           <p className="text-[10px] font-bold text-white/70 mb-0.5 flex items-center gap-1">

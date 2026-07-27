@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {
   Plane, Hotel, Landmark, Utensils, Coffee, Moon, Ticket,
-  MapPin, ExternalLink, Clock, AlertCircle, Star, ChevronDown, ChevronUp
+  MapPin, ExternalLink, Clock, AlertCircle, Star, ChevronDown, ChevronUp, Edit3
 } from 'lucide-react';
 
 // 카테고리 정의
@@ -15,7 +15,7 @@ const CATEGORY_MAP = {
   event:       { label: '공연/행사',  Icon: Ticket,    cls: 'cat-event' },
 };
 
-export default function EventCard({ item, onFocusMap }) {
+export default function EventCard({ item, onFocusMap, onEdit }) {
   const [showHighlights, setShowHighlights] = useState(false);
   const cat = CATEGORY_MAP[item.category] || CATEGORY_MAP.sightseeing;
   const { Icon } = cat;
@@ -35,23 +35,37 @@ export default function EventCard({ item, onFocusMap }) {
 
       {/* 카드 */}
       <div className="trip-card animate-slide-up">
-        {/* 시간 + 카테고리 레이블 */}
+        {/* 시간 + 카테고리 레이블 + 수정 버튼 */}
         <div className="flex items-center justify-between px-4 pt-3 pb-0">
           <div className="flex items-center gap-2">
             <Clock className="w-3.5 h-3.5 text-slate-400" />
             <span className="text-xs font-bold text-slate-500">{item.time}</span>
           </div>
-          <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-            item.category === 'transport' ? 'bg-blue-50 text-blue-600' :
-            item.category === 'hotel' ? 'bg-violet-50 text-violet-600' :
-            item.category === 'sightseeing' ? 'bg-teal-50 text-teal-600' :
-            item.category === 'food' ? 'bg-amber-50 text-amber-600' :
-            item.category === 'cafe' ? 'bg-orange-50 text-orange-600' :
-            item.category === 'night' ? 'bg-purple-50 text-purple-600' :
-            'bg-rose-50 text-rose-500'
-          }`}>
-            {cat.label}
-          </span>
+
+          <div className="flex items-center gap-1.5">
+            <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+              item.category === 'transport' ? 'bg-blue-50 text-blue-600' :
+              item.category === 'hotel' ? 'bg-violet-50 text-violet-600' :
+              item.category === 'sightseeing' ? 'bg-teal-50 text-teal-600' :
+              item.category === 'food' ? 'bg-amber-50 text-amber-600' :
+              item.category === 'cafe' ? 'bg-orange-50 text-orange-600' :
+              item.category === 'night' ? 'bg-purple-50 text-purple-600' :
+              'bg-rose-50 text-rose-500'
+            }`}>
+              {cat.label}
+            </span>
+
+            {/* 일정 수정 버튼 */}
+            {onEdit && (
+              <button
+                onClick={() => onEdit(item)}
+                className="p-1 rounded-md text-slate-400 hover:text-sky-600 hover:bg-sky-50 transition-all"
+                title="일정 수정"
+              >
+                <Edit3 className="w-3.5 h-3.5" />
+              </button>
+            )}
+          </div>
         </div>
 
         {/* 제목 */}

@@ -15,7 +15,17 @@ export default function App() {
   const [isSheetModalOpen, setIsSheetModalOpen] = useState(false);
   const [focusedMapItem, setFocusedMapItem] = useState(null);
 
-  const { itinerary, tripInfo, lastSyncTime, updateItinerary, resetToDefault } = useItinerary();
+  const {
+    itinerary,
+    tripInfo,
+    lastSyncTime,
+    updateItinerary,
+    editItem,
+    addItem,
+    removeItem,
+    resetToDefault
+  } = useItinerary();
+
   const { isOnline, showToast, toastMessage, dismissToast } = useOnlineStatus();
   const tripTime = useTripTime();
 
@@ -62,7 +72,13 @@ export default function App() {
       {/* 메인 콘텐츠 */}
       <main>
         {activeTab === 'timeline' && (
-          <TimelineView itinerary={itinerary} onFocusMap={handleFocusMap} />
+          <TimelineView
+            itinerary={itinerary}
+            onFocusMap={handleFocusMap}
+            onEditItem={editItem}
+            onAddItem={addItem}
+            onDeleteItem={removeItem}
+          />
         )}
         {activeTab === 'map' && (
           <MapView itinerary={itinerary} focusedItem={focusedMapItem} />
