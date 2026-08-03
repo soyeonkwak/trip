@@ -35,7 +35,7 @@ const PHOTO_SPOTS = [
         tipFemale: '돌담에 비스듬히 앉기, 한 다리 교차, 옆 바라보기, 궁전 배경 넣기',
         tipMale: '계단에 앉아 성 방향 바라보기, 오버핏 셋업, 로우앵글 full body',
         imgFemale: '/photo-spots/salzburg-mirabell-female.jpg',
-        imgMale: null, // 추후 추가 예정
+        imgMale: '/photo-spots/salzburg-mirabell-male.jpg',
       },
       {
         name: '할슈타트 카페 테라스 (Hallstatt)',
@@ -43,7 +43,7 @@ const PHOTO_SPOTS = [
         tipFemale: '챙 넓은 모자 + 아이스 음료, 호수 방향 시선, 카메라 안 보기',
         tipMale: '선착장 난간에 기대고 호수 내려다보기, 쿨톤 수면 반사 배경',
         imgFemale: '/photo-spots/hallstatt-cafe-female.jpg',
-        imgMale: null,
+        imgMale: '/photo-spots/hallstatt-cafe-male.jpg',
       },
     ]
   },
@@ -57,7 +57,7 @@ const PHOTO_SPOTS = [
         tipFemale: '알프스가 후광처럼 뒤에 오도록, 클로즈업 셀카, 시선은 산 방향',
         tipMale: '거리 중앙 서서 알프스 바라보기, 친구가 아래서 올려찍기, 뒷태샷',
         imgFemale: '/photo-spots/innsbruck-alps-female.jpg',
-        imgMale: null,
+        imgMale: '/photo-spots/innsbruck-alps-male.jpg',
       },
     ]
   },
@@ -71,7 +71,7 @@ const PHOTO_SPOTS = [
         tipFemale: '궁전 앞 계단에 비스듬히 앉기, 팔 무릎에 걸치기, 옆 바라보기',
         tipMale: '계단에 앉아 뒤돌아 궁전 바라보기, 멀리서 광각 full body',
         imgFemale: '/photo-spots/vienna-belvedere-female.jpg',
-        imgMale: null,
+        imgMale: '/photo-spots/vienna-belvedere-male.jpg',
       },
       {
         name: '미술사박물관 돔 카페 (KHM)',
@@ -79,7 +79,7 @@ const PHOTO_SPOTS = [
         tipFemale: '황금 천장 올려다보기, 클로즈업, 플래시 금지, 카페 조명만 활용',
         tipMale: '난간에 팔 올리고 아래 홀 내려다보기, 쿨한 측면 프로필 구도',
         imgFemale: '/photo-spots/vienna-cafe-female.jpg',
-        imgMale: null,
+        imgMale: '/photo-spots/vienna-cafe-male.jpg',
       },
     ]
   },
@@ -93,7 +93,7 @@ const PHOTO_SPOTS = [
         tipFemale: '아치 안에 서서 국회의사당 바라보기, 친구가 멀리서 광각으로',
         tipMale: '아치 기둥에 한 팔 기대기, 측면 프로필 or 뒷태샷, 일몰 배경',
         imgFemale: '/photo-spots/budapest-bastion-female.jpg',
-        imgMale: null,
+        imgMale: '/photo-spots/budapest-bastion-male.jpg',
       },
       {
         name: '아난타라 뉴욕 카페 (New York Café)',
@@ -101,7 +101,7 @@ const PHOTO_SPOTS = [
         tipFemale: '황금 천장 올려다보기, 진한 조명 속 클로즈업, 2층 계단 난간',
         tipMale: '2층 계단에 기대 아래 홀 내려다보기, 무심한 측면 응시',
         imgFemale: '/photo-spots/budapest-newyork-female.jpg',
-        imgMale: null,
+        imgMale: '/photo-spots/budapest-newyork-male.jpg',
       },
     ]
   },
