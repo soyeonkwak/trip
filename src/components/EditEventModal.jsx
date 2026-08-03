@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { X, Clock, MapPin, Tag, FileText, Trash2, Check, PlusCircle, Edit3, ExternalLink, Search } from 'lucide-react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { X, Clock, MapPin, Tag, FileText, Trash2, Check, PlusCircle, Edit3, ExternalLink, Search, Loader2 } from 'lucide-react';
+import { geocodeLocation } from '../utils/geocoding';
 
 const CATEGORY_OPTIONS = [
   { value: 'sightseeing', label: '🏛️ 관광/명소' },
@@ -45,10 +46,14 @@ export default function EditEventModal({ isOpen, onClose, item, defaultDay = 1, 
   const [category, setCategory] = useState('sightseeing');
   const [notes, setNotes] = useState('');
 
+  // 지오코딩 상태
+  const [isGeocoding, setIsGeocoding] = useState(false);
+  const [geocodedCoords, setGeocodedCoords] = useState(null); // { lat, lng }
+  const [geocodeStatus, setGeocodeStatus] = useState(null); // 'success' | 'failed' | null
+
   useEffect(() => {
     if (item) {
       setDay(item.day || defaultDay);
-      // 시간 분리 (예: "14:00 - 15:30")
       const timeParts = (item.time || '12:00').split('-').map(s => s.trim());
       setStartTime(timeParts[0] || '12:00');
       setEndTime(timeParts[1] || '');
@@ -65,6 +70,9 @@ export default function EditEventModal({ isOpen, onClose, item, defaultDay = 1, 
       setCategory('sightseeing');
       setNotes('');
     }
+    // 모달 새로 열릴 때 지오코딩 상태 초기화
+    setGeocodedCoords(null);
+    setGeocodeStatus(null);
   }, [item, defaultDay, isOpen]);
 
   if (!isOpen) return null;
@@ -72,7 +80,33 @@ export default function EditEventModal({ isOpen, onClose, item, defaultDay = 1, 
   const currentCity = CITY_BY_DAY[day] || '프라하';
   const recommendedPlaces = RECOMMENDED_PLACES_BY_CITY[currentCity] || [];
 
-  const handleSubmit = (e) => {
+  // 위치 검색 → 지오코딩 → 좌표 업데이트
+  const handleGeocode = useCallback(async (locationQuery) => {
+    const query = (locationQuery || location || title || '').trim();
+    if (!query) return;
+
+    setIsGeocoding(true);
+    setGeocodeStatus(null);
+
+    const coords = await geocodeLocation(query, currentCity);
+    setIsGeocoding(false);
+
+    if (coords) {
+      setGeocodedCoords(coords);
+      setGeocodeStatus('success');
+    } else {
+      setGeocodeStatus('failed');
+    }
+  }, [location, title, currentCity]);
+
+  // 구글 맵에서 장소 확인 (새 탭)
+  const handleOpenGoogleMapsSearch = () => {
+    const query = location.trim() || title.trim() || currentCity;
+    const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query + ' ' + currentCity)}`;
+    window.open(url, '_blank');
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!title.trim()) {
       alert('일정 제목을 입력해 주세요!');
@@ -81,6 +115,37 @@ export default function EditEventModal({ isOpen, onClose, item, defaultDay = 1, 
 
     const formattedTime = endTime.trim() ? `${startTime} - ${endTime}` : startTime;
     const finalLocation = location.trim() || title.trim();
+
+    // 저장 시점에 좌표 결정:
+    // 1) 이미 지오코딩된 좌표 있으면 사용
+    // 2) 없으면 저장 시 자동 지오코딩 시도
+    // 3) 그래도 없으면 기존 item 좌표 or 도시 기본 좌표 사용
+    let lat = item?.lat;
+    let lng = item?.lng;
+
+    if (geocodedCoords) {
+      lat = geocodedCoords.lat;
+      lng = geocodedCoords.lng;
+    } else {
+      // 저장 시 자동 지오코딩
+      setIsGeocoding(true);
+      const coords = await geocodeLocation(finalLocation, currentCity);
+      setIsGeocoding(false);
+      if (coords) {
+        lat = coords.lat;
+        lng = coords.lng;
+      }
+    }
+
+    // 도시 기본 폴백
+    if (!lat || !lng) {
+      const defaults = {
+        '프라하': [50.0878, 14.4205], '잘츠부르크': [47.8095, 13.0550],
+        '인스부르크': [47.2692, 11.4041], '빈': [48.2082, 16.3738],
+        '부다페스트': [47.4979, 19.0402],
+      };
+      [lat, lng] = defaults[currentCity] || [50.0878, 14.4205];
+    }
 
     const updatedItem = {
       ...item,
@@ -93,8 +158,8 @@ export default function EditEventModal({ isOpen, onClose, item, defaultDay = 1, 
       location: finalLocation,
       category: category,
       notes: notes.trim(),
-      lat: item?.lat || 50.0878,
-      lng: item?.lng || 14.4205,
+      lat,
+      lng,
       highlights: item?.highlights || []
     };
 
@@ -109,15 +174,7 @@ export default function EditEventModal({ isOpen, onClose, item, defaultDay = 1, 
     }
   };
 
-  // 구글 맵에서 직접 장소 검색 및 연동 테스트
-  const handleOpenGoogleMapsSearch = () => {
-    const query = location.trim() || title.trim() || currentCity;
-    const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query + ' ' + currentCity)}`;
-    window.open(url, '_blank');
-  };
-
   return (
-    // z-[100] 적용으로 하단 BottomNav(z-50)보다 상위에 팝업 노출!
     <div className="fixed inset-0 z-[100] bg-black/75 backdrop-blur-md flex items-end sm:items-center justify-center p-0 sm:p-4 animate-fade-in">
       
       {/* 바텀 시트 메인 컨테이너 */}
@@ -136,7 +193,7 @@ export default function EditEventModal({ isOpen, onClose, item, defaultDay = 1, 
               <h3 className="text-base font-extrabold text-slate-800">
                 {isEditMode ? '일정 수정하기' : '새 일정 추가하기'}
               </h3>
-              <p className="text-[11px] text-slate-400 font-medium">하단 저장 버튼을 눌러 일정을 완결하세요</p>
+              <p className="text-[11px] text-slate-400 font-medium">장소 입력 후 📍 핀 찾기 → 지도에 자동 반영</p>
             </div>
           </div>
           <button
@@ -173,11 +230,11 @@ export default function EditEventModal({ isOpen, onClose, item, defaultDay = 1, 
                 </select>
               </div>
 
-              {/* 시각 드롭다운 리스트 (주르륵 선택) */}
+              {/* 시각 드롭다운 리스트 */}
               <div>
                 <label className="block text-[11px] font-bold text-slate-600 mb-1 flex items-center gap-1">
                   <Clock className="w-3.5 h-3.5 text-sky-500" />
-                  <span>시각 선택 (드롭다운)</span>
+                  <span>시각 선택</span>
                 </label>
                 <div className="flex gap-1.5">
                   <select
@@ -238,54 +295,117 @@ export default function EditEventModal({ isOpen, onClose, item, defaultDay = 1, 
                 onChange={(e) => {
                   setTitle(e.target.value);
                   if (!location) setLocation(e.target.value);
+                  setGeocodedCoords(null);
+                  setGeocodeStatus(null);
                 }}
                 placeholder="예: 카페 데멜 방문, 슈테판 대성당 야경"
                 className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-extrabold text-slate-800 focus:outline-none focus:ring-2 focus:ring-sky-500"
               />
             </div>
 
-            {/* 구글 맵 장소 검색 및 주소 연동 */}
+            {/* 구글 맵 장소 검색 및 지도 핀 연동 */}
             <div>
               <div className="flex items-center justify-between mb-1">
                 <label className="text-[11px] font-bold text-slate-600 flex items-center gap-1">
                   <MapPin className="w-3.5 h-3.5 text-rose-500" />
-                  <span>구글 맵 검색 장소 / 주소</span>
+                  <span>지도 핀 장소 / 주소</span>
                 </label>
-                <button
-                  type="button"
-                  onClick={handleOpenGoogleMapsSearch}
-                  className="text-[10px] font-bold text-sky-600 bg-sky-50 hover:bg-sky-100 px-2 py-0.5 rounded-md border border-sky-200 flex items-center gap-1 transition-all"
-                >
-                  <Search className="w-3 h-3" />
-                  <span>구글맵에서 장소 확인</span>
-                  <ExternalLink className="w-2.5 h-2.5" />
-                </button>
+                <div className="flex items-center gap-1.5">
+                  {/* 📍 핀 위치 찾기 버튼 */}
+                  <button
+                    type="button"
+                    onClick={() => handleGeocode(location || title)}
+                    disabled={isGeocoding}
+                    className={`text-[10px] font-bold px-2.5 py-1 rounded-lg border flex items-center gap-1 transition-all ${
+                      geocodeStatus === 'success'
+                        ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                        : geocodeStatus === 'failed'
+                        ? 'bg-rose-50 text-rose-600 border-rose-200'
+                        : 'bg-violet-50 text-violet-700 border-violet-200 hover:bg-violet-100'
+                    }`}
+                  >
+                    {isGeocoding ? (
+                      <Loader2 className="w-3 h-3 animate-spin" />
+                    ) : (
+                      <MapPin className="w-3 h-3" />
+                    )}
+                    <span>
+                      {isGeocoding ? '검색 중...'
+                        : geocodeStatus === 'success' ? '📍 핀 위치 확인!'
+                        : geocodeStatus === 'failed' ? '위치 못 찾음'
+                        : '📍 지도 핀 찾기'}
+                    </span>
+                  </button>
+
+                  {/* 구글맵 외부 열기 */}
+                  <button
+                    type="button"
+                    onClick={handleOpenGoogleMapsSearch}
+                    className="text-[10px] font-bold text-sky-600 bg-sky-50 hover:bg-sky-100 px-2 py-1 rounded-lg border border-sky-200 flex items-center gap-1 transition-all"
+                  >
+                    <ExternalLink className="w-3 h-3" />
+                    <span>구글맵</span>
+                  </button>
+                </div>
               </div>
 
               <input
                 type="text"
                 value={location}
-                onChange={(e) => setLocation(e.target.value)}
+                onChange={(e) => {
+                  setLocation(e.target.value);
+                  setGeocodedCoords(null);
+                  setGeocodeStatus(null);
+                }}
                 placeholder="예: Cafe Demel, Vienna 또는 상세 장소 이름"
                 className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-sky-500"
               />
 
-              {/* 해당 도시 주요 구글 맵 추천 칩 */}
+              {/* 지오코딩 결과 미리보기 */}
+              {geocodedCoords && geocodeStatus === 'success' && (
+                <div className="mt-2 flex items-center gap-2 px-3 py-2 bg-emerald-50 rounded-xl border border-emerald-200">
+                  <span className="text-base">📍</span>
+                  <div>
+                    <p className="text-[11px] font-extrabold text-emerald-800">지도 핀 위치 확인 완료!</p>
+                    <p className="text-[10px] text-emerald-600 font-mono">
+                      {geocodedCoords.lat.toFixed(4)}, {geocodedCoords.lng.toFixed(4)}
+                    </p>
+                    <p className="text-[10px] text-emerald-600">저장 시 지도 핀이 이 위치로 업데이트됩니다</p>
+                  </div>
+                </div>
+              )}
+
+              {geocodeStatus === 'failed' && (
+                <div className="mt-2 px-3 py-2 bg-amber-50 rounded-xl border border-amber-200">
+                  <p className="text-[11px] font-bold text-amber-700">⚠️ 정확한 위치를 찾지 못했어요</p>
+                  <p className="text-[10px] text-amber-600">저장 시 도시 중심 위치로 핀이 표시됩니다. 장소명을 영문이나 현지 언어로 입력하면 더 정확해요!</p>
+                </div>
+              )}
+
+              {/* 해당 도시 주요 추천 칩 */}
               {recommendedPlaces.length > 0 && (
                 <div className="mt-2">
-                  <p className="text-[10px] text-slate-400 font-semibold mb-1">💡 {currentCity} 구글 맵 인기 추천:</p>
+                  <p className="text-[10px] text-slate-400 font-semibold mb-1">💡 {currentCity} 인기 장소 (탭하면 핀 자동 설정):</p>
                   <div className="flex flex-wrap gap-1">
                     {recommendedPlaces.map((place, idx) => (
                       <button
                         type="button"
                         key={idx}
-                        onClick={() => {
+                        onClick={async () => {
                           if (!title) setTitle(place);
                           setLocation(place);
+                          setGeocodeStatus(null);
+                          setGeocodedCoords(null);
+                          // 추천 장소 탭하면 즉시 지오코딩
+                          const coords = await geocodeLocation(place, currentCity);
+                          if (coords) {
+                            setGeocodedCoords(coords);
+                            setGeocodeStatus('success');
+                          }
                         }}
                         className="text-[10px] font-bold text-slate-600 bg-slate-100 hover:bg-sky-50 hover:text-sky-600 px-2 py-1 rounded-lg border border-slate-200 transition-all"
                       >
-                        + {place}
+                        📍 {place}
                       </button>
                     ))}
                   </div>
@@ -310,7 +430,7 @@ export default function EditEventModal({ isOpen, onClose, item, defaultDay = 1, 
 
           </div>
 
-          {/* 3. 하단 저장 버튼 바 (하단 탭바 z-50보다 완전히 위에 항상 고정 노출!) */}
+          {/* 3. 하단 저장 버튼 바 */}
           <div className="p-4 border-t border-slate-100 bg-white flex items-center gap-2 flex-shrink-0 z-30 shadow-lg">
             {isEditMode && (
               <button
@@ -333,10 +453,14 @@ export default function EditEventModal({ isOpen, onClose, item, defaultDay = 1, 
 
             <button
               type="submit"
-              className="flex-1 py-3 bg-sky-600 hover:bg-sky-700 text-white rounded-2xl text-xs font-extrabold flex items-center justify-center gap-1.5 shadow-lg shadow-sky-200 transition-all active:scale-95"
+              disabled={isGeocoding}
+              className="flex-1 py-3 bg-sky-600 hover:bg-sky-700 disabled:bg-sky-300 text-white rounded-2xl text-xs font-extrabold flex items-center justify-center gap-1.5 shadow-lg shadow-sky-200 transition-all active:scale-95"
             >
-              <Check className="w-4 h-4" />
-              <span>{isEditMode ? '수정 완료' : '일정 저장하기'}</span>
+              {isGeocoding ? (
+                <><Loader2 className="w-4 h-4 animate-spin" /><span>핀 위치 설정 중...</span></>
+              ) : (
+                <><Check className="w-4 h-4" /><span>{isEditMode ? '수정 완료' : '일정 저장하기'}</span></>
+              )}
             </button>
           </div>
 
