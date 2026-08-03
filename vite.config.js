@@ -37,7 +37,7 @@ export default defineConfig({
         ]
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,json}'],
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,json,jpg,jpeg,webp}'],
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/maps\.googleapis\.com\/.*/i,
