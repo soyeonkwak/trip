@@ -2,6 +2,16 @@ import { useState, useEffect, useCallback } from 'react';
 import { SAMPLE_ITINERARY, INITIAL_TRIP_INFO } from '../data/sampleItinerary';
 import { pushItineraryToCloud, pullItineraryFromCloud } from '../utils/cloudSync';
 
+// 도시별 기본 좌표 (지오코딩 실패 시 폴백)
+const CITY_DEFAULT_COORDS = {
+  '프라하': { lat: 50.0755, lng: 14.4378 },
+  '잘츠부르크': { lat: 47.8095, lng: 13.0550 },
+  '인스부르크': { lat: 47.2692, lng: 11.4041 },
+  '빈': { lat: 48.2082, lng: 16.3738 },
+  '부다페스트': { lat: 47.4979, lng: 19.0402 },
+  '인천': { lat: 37.4602, lng: 126.4407 },
+};
+
 const STORAGE_KEY_ITINERARY = 'travel_app_itinerary_v5';
 const STORAGE_KEY_TRIP_INFO = 'travel_app_trip_info_v5';
 const STORAGE_KEY_LAST_SYNC = 'travel_app_last_sync_v5';
@@ -96,11 +106,13 @@ export function useItinerary() {
 
   // 일정 추가 (내 핸드폰 + 다른 핸드폰에도 클라우드 즉시 전송)
   const addItem = (item) => {
+    // 지오코딩된 좌표가 있으면 그대로 사용, 없으면 도시 기본 좌표 폴백
+    const cityCoords = CITY_DEFAULT_COORDS[item.city] || CITY_DEFAULT_COORDS['프라하'];
     const newItem = {
       ...item,
       id: item.id || `custom-${Date.now()}`,
-      lat: item.lat || 50.0878,
-      lng: item.lng || 14.4205,
+      lat: item.lat || cityCoords.lat,
+      lng: item.lng || cityCoords.lng,
     };
     const nextItinerary = [...itinerary, newItem];
     setItinerary(nextItinerary);
