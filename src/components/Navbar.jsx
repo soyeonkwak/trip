@@ -1,11 +1,11 @@
 import React from 'react';
-import { Wifi, WifiOff, FileSpreadsheet, RefreshCw, Globe, ChevronRight } from 'lucide-react';
+import { Wifi, WifiOff, FileSpreadsheet, RefreshCw, Globe, ChevronRight, Cloud } from 'lucide-react';
 
-export default function Navbar({ isOnline, tripTitle, lastSyncTime, onOpenSheetModal, onResetDefault }) {
+export default function Navbar({ isOnline, tripTitle, lastSyncTime, onManualSync, onOpenSheetModal, onResetDefault }) {
   return (
     <header className="trip-header text-white px-5 pt-12 pb-5 relative z-10">
       {/* 온라인 상태 & 컨트롤 버튼 바 */}
-      <div className="flex items-center justify-between mb-3">
+      <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
         <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold ${
           isOnline ? 'bg-white/20 text-white' : 'bg-amber-400/80 text-amber-900'
         }`}>
@@ -16,6 +16,18 @@ export default function Navbar({ isOnline, tripTitle, lastSyncTime, onOpenSheetM
         </div>
 
         <div className="flex items-center gap-2">
+          {/* 수동 클라우드 공유 동기화 버튼 */}
+          {onManualSync && (
+            <button
+              onClick={onManualSync}
+              className="flex items-center gap-1 bg-emerald-500 hover:bg-emerald-600 text-white px-2.5 py-1.5 rounded-full text-xs font-bold transition-all active:scale-95 shadow-sm"
+              title="다른 핸드폰 수정 내용 즉시 동기화"
+            >
+              <Cloud className="w-3.5 h-3.5" />
+              <span>실시간 동기화</span>
+            </button>
+          )}
+
           {/* 구글 시트 연동 버튼 */}
           <button
             onClick={onOpenSheetModal}
@@ -44,7 +56,7 @@ export default function Navbar({ isOnline, tripTitle, lastSyncTime, onOpenSheetM
             {tripTitle || '동유럽 여행 플래너'}
           </h1>
           <p className="text-[11px] text-sky-100/80 mt-0.5 font-medium">
-            2026년 8월 6일 ~ 17일 · 10박 12일
+            2026년 8월 6일 ~ 17일 · 10박 12일 (다중 핸드폰 실시간 공유 ON)
           </p>
         </div>
       </div>
@@ -65,7 +77,7 @@ export default function Navbar({ isOnline, tripTitle, lastSyncTime, onOpenSheetM
 
       {/* 마지막 동기화 시각 */}
       <p className="text-[10px] text-white/50 mt-2 font-medium">
-        마지막 동기화: {lastSyncTime}
+        마지막 클라우드 동기화: {lastSyncTime}
       </p>
     </header>
   );

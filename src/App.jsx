@@ -8,7 +8,7 @@ import TravelTipsView from './components/TravelTipsView';
 import { useItinerary } from './hooks/useItinerary';
 import { useOnlineStatus } from './hooks/useOnlineStatus';
 import { useTripTime } from './hooks/useTripTime';
-import { WifiOff, Wifi, X } from 'lucide-react';
+import { WifiOff, Wifi, X, Cloud } from 'lucide-react';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('timeline');
@@ -19,6 +19,9 @@ export default function App() {
     itinerary,
     tripInfo,
     lastSyncTime,
+    syncToast,
+    dismissSyncToast,
+    manualSync,
     updateItinerary,
     editItem,
     addItem,
@@ -50,6 +53,7 @@ export default function App() {
         isOnline={isOnline}
         tripTitle={tripInfo.title}
         lastSyncTime={lastSyncTime}
+        onManualSync={manualSync}
         onOpenSheetModal={() => setIsSheetModalOpen(true)}
         onResetDefault={resetToDefault}
       />
@@ -65,6 +69,21 @@ export default function App() {
               <span className="text-xs">{toastMessage}</span>
             </div>
             <button onClick={dismissToast}><X className="w-4 h-4 opacity-70" /></button>
+          </div>
+        </div>
+      )}
+
+      {/* 다중 핸드폰 실시간 동기화 토스트 */}
+      {syncToast && (
+        <div className="fixed top-16 left-1/2 -translate-x-1/2 z-[60] max-w-sm w-full px-4 animate-slide-up">
+          <div className="flex items-center justify-between gap-2 px-4 py-3 bg-sky-600 text-white rounded-2xl shadow-xl text-xs font-bold border border-sky-400">
+            <div className="flex items-center gap-2">
+              <Cloud className="w-4 h-4 text-sky-200" />
+              <span>{syncToast}</span>
+            </div>
+            <button onClick={dismissSyncToast} className="p-1 hover:bg-sky-700 rounded-lg">
+              <X className="w-4 h-4" />
+            </button>
           </div>
         </div>
       )}
